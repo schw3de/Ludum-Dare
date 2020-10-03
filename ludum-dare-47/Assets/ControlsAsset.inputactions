@@ -1,0 +1,90 @@
+{
+    "name": "ControlsAsset",
+    "maps": [
+        {
+            "name": "Cashier",
+            "id": "a4333bed-fe9a-43e1-ab61-365a0530d338",
+            "actions": [
+                {
+                    "name": "ActivateTreadmill",
+                    "type": "Button",
+                    "id": "a1d807ad-0890-42d5-95ad-1ddc8fa666ce",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Take",
+                    "type": "Button",
+                    "id": "06704e9a-4cd2-4a8f-8a4d-30a3f7fd9dad",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "RotateLeft",
+                    "type": "Button",
+                    "id": "e43813a1-3041-407c-b99b-07b1bf0cc26f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "RotateRight",
+                    "type": "Button",
+                    "id": "2eee18df-ce67-4d38-9734-c1f86aba2ab6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bf4062d7-9cd0-499e-9d3d-99cbca65b673",
+                    "path": "<Keyboard>/space",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ActivateTreadmill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2df00a3-09f2-4184-9d2f-1beeac3237ab",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Take",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "134adb6e-9997-4e37-8586-9248c8d504a3",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9350c77e-d6de-4202-a96c-6fc50056df7a",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

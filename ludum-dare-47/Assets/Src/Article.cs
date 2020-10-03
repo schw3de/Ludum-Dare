@@ -1,18 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Article : MonoBehaviour
+namespace schw3de.ld47
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Article : MonoBehaviour
     {
-        
-    }
+        //private bool _isDragging = false;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //private void Update()
+        //{
+        //    Debug.Log(UnityEngine.InputSystem.Mouse.current.position.x.ReadValue());
+        //    if (_isDragging)
+        //    {
+        //        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        //        transform.Translate(mousePosition);
+        //    }
+        //}
+
+        //public void OnMouseDown()
+        //{
+        //    _isDragging = true;
+
+        //}
+
+        //public void OnMouseDrag()
+        //{
+        //    _isDragging = false;
+        //}
     }
 }
