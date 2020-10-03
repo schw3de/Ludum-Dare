@@ -9,5 +9,6 @@ namespace schw3de.ld47
     public static class Tags
     {
         public static readonly string Article = "article";
+        public static readonly string Barcode = "barcode";
     }
 }

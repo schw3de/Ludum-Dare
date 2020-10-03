@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - article
+  - barcode
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Articles
   - 
   - 
   - 
@@ -39,6 +40,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 154615357
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Customers
+    uniqueID: 3067022505
+    locked: 0
+  - name: Treadmill
+    uniqueID: 3330791905
+    locked: 0
+  - name: Articles
+    uniqueID: 4276328367
     locked: 0

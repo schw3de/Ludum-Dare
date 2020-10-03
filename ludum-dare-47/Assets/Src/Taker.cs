@@ -61,7 +61,7 @@ namespace schw3de.ld47
             _isDragging = false;
         }
 
-        private void Started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        private void Started(InputAction.CallbackContext obj)
         {
             Debug.Log($"performaed: {obj.performed}");
    
