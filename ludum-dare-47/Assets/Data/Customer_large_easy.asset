@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Customer_large_easy
   m_EditorClassIdentifier: 
   AmountArticles: 25
-  SecondsSatification: 35
+  SecondsSatification: 55

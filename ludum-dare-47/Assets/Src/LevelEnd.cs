@@ -10,38 +10,39 @@ namespace schw3de.ld47
 {
     public class LevelEnd : MonoBehaviour
     {
-        [SerializeField]
-        private readonly Button _upgradeSpeed;
 
         [SerializeField]
-        private readonly TextMeshProUGUI _upgradeSpeedText;
+        private Button _upgradeSpeed;
 
         [SerializeField]
-        private readonly Button _upgradeScanner;
+        private TextMeshProUGUI _upgradeSpeedText;
 
         [SerializeField]
-        private readonly TextMeshProUGUI _upgradeScannerText;
+        private Button _upgradeScanner;
 
         [SerializeField]
-        private readonly Button _continueButton;
+        private TextMeshProUGUI _upgradeScannerText;
 
         [SerializeField]
-        private readonly Button _restartButton;
+        private Button _continueButton;
 
         [SerializeField]
-        private readonly List<LevelData> _levels;
+        private Button _restartButton;
 
         [SerializeField]
-        private readonly GameObject _gameOverPanel;
+        private List<LevelData> _levels;
 
         [SerializeField]
-        private readonly TextMeshProUGUI _salary;
+        private GameObject _gameOverPanel;
 
         [SerializeField]
-        private readonly GameObject _fired;
+        private TextMeshProUGUI _salary;
 
         [SerializeField]
-        private readonly TextMeshProUGUI _dayOver;
+        private GameObject _fired;
+
+        [SerializeField]
+        private TextMeshProUGUI _dayOver;
 
         private bool _isGameOver;
         private bool _isFired;

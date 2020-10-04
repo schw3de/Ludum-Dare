@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Customer_small_extra_hurry
   m_EditorClassIdentifier: 
   AmountArticles: 1
-  SecondsSatification: 5
+  SecondsSatification: 6

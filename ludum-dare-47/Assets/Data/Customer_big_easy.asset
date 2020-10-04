@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c77f1da3c7dbe644a0e486d9875d1a5, type: 3}
   m_Name: Customer_big_easy
   m_EditorClassIdentifier: 
-  AmountArticles: 20
+  AmountArticles: 13
   SecondsSatification: 40
