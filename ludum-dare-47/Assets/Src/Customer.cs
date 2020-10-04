@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace schw3de.ld47.utils
 {
@@ -9,11 +10,15 @@ namespace schw3de.ld47.utils
 
         private Vector3 _targetPosition;
         private bool _destoryOnArrival;
+        private Func<bool> _currentWaitCondition;
 
         public bool HasArrived { get; private set; }
 
-        public void SetTargetPosition(Transform target, bool destroyOnArrival)
+        public Guid Id { get; set; }
+
+        public void SetTargetPosition(Transform target, bool destroyOnArrival, Func<bool> currentWaitCondition = null)
         {
+            _currentWaitCondition = currentWaitCondition;
             _targetPosition = transform.position.ChangeX(target.position.x);
             _destoryOnArrival = destroyOnArrival;
             HasArrived = false;
@@ -21,6 +26,13 @@ namespace schw3de.ld47.utils
 
         private void Update()
         {
+            if(_currentWaitCondition != null && _currentWaitCondition())
+            {
+                return;
+            }
+
+            _currentWaitCondition = null;
+
             if (Vector3.Distance(transform.position, _targetPosition) > 0.1f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, _targetPosition, Time.deltaTime * _speed);

@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using Unity.IO.LowLevel.Unsafe;
+using UnityEngine;
 
 namespace schw3de.ld47
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T _instance;
+
+        protected static bool _dontDestroyOnLoad = false;
 
         public static T Instance
         {
@@ -20,6 +23,10 @@ namespace schw3de.ld47
 
                 if(instance != null)
                 {
+                    if(_dontDestroyOnLoad)
+                    {
+                        DontDestroyOnLoad(instance.gameObject);
+                    }
                     _instance = instance.GetComponent<T>();
                     return _instance;
                 }
@@ -28,7 +35,10 @@ namespace schw3de.ld47
 
                 _instance = singletonGo.AddComponent<T>();
 
-                DontDestroyOnLoad(singletonGo);
+                if(_dontDestroyOnLoad)
+                {
+                    DontDestroyOnLoad(singletonGo);
+                }
 
                 return _instance;
             }

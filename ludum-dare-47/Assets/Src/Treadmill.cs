@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace schw3de.ld47
@@ -9,18 +6,24 @@ namespace schw3de.ld47
     public class Treadmill : MonoBehaviour
     {
         [SerializeField]
-        private bool _registerInput = false;
-        [SerializeField]
         private bool _alwaysOn = false;
 
         private bool _isOn = false;
 
-        private void Awake()
+        public void ApplyFeature()
         {
-            if(_registerInput)
+            if (_alwaysOn)
             {
-                Controls.Instance.Asset.Cashier.ActivateTreadmill.started += ActivateTreadmill_performed; // (context) => _isOn = true;
-                Controls.Instance.Asset.Cashier.ActivateTreadmill.canceled += ActivateTreadmill_performed; // (context) => _isOn = false;
+                return;
+            }
+
+            Controls.Instance.Asset.Cashier.ActivateTreadmill.started -= ActivateTreadmill_performed; 
+            Controls.Instance.Asset.Cashier.ActivateTreadmill.canceled -= ActivateTreadmill_performed;
+            
+            if (!Features.Instance.AutomaticTreadmill)
+            {
+                Controls.Instance.Asset.Cashier.ActivateTreadmill.started += ActivateTreadmill_performed;
+                Controls.Instance.Asset.Cashier.ActivateTreadmill.canceled += ActivateTreadmill_performed;
             }
         }
 
@@ -30,27 +33,12 @@ namespace schw3de.ld47
             _isOn = context.started;
         }
 
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-
         private void OnCollisionStay2D(Collision2D collision)
         {
-            if(_alwaysOn || (collision.gameObject.tag == Tags.Article && _isOn))
+            if (_alwaysOn || ((collision.gameObject.tag == Tags.Article || collision.gameObject.tag == Tags.NextCustomerStopper) && _isOn))
             {
-                Vector3 currentPosition = collision.gameObject.transform.position;
-                //collision.gameObject.GetComponent<Rigidbody2D>().MovePosition(currentPosition + new Vector3(1,0,0));
                 var currentVelocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
-                collision.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-0.5f, currentVelocity.y);
+                collision.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(-Features.Instance.TreadmillSpeed, currentVelocity.y);
             }
         }
     }

@@ -12,5 +12,6 @@ namespace schw3de.ld47
         public static readonly string Barcode = "barcode";
         public static readonly string DraggingArea = "draggingarea";
         public static readonly string CashierSystem = "cashiersystem";
+        internal static readonly string NextCustomerStopper = "nextcustomerstopper";
     }
 }

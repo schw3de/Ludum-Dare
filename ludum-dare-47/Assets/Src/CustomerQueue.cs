@@ -20,29 +20,53 @@ namespace schw3de.ld47
         [SerializeField]
         private List<GameObject> _customers;
         private Customer _nextCustomer;
+        private Queue<Guid> _customerIds;
+
         public Customer ActiveCustomer { get; set; }
 
-        private void Awake()
+
+        private void CreateCustomer(Transform targetPosition, Func<bool> waitCondition = null)
         {
-            ActiveCustomer = Instantiate(_customers.First()).GetComponent<Customer>();
-            ActiveCustomer.SetTargetPosition(_payPosition, false);
-            StartCoroutine(InitQueue());
+            if (ActiveCustomer == null)
+            {
+                ActiveCustomer = Instantiate(_customers.GetRandomItem()).GetComponent<Customer>();
+                ActiveCustomer.SetTargetPosition(targetPosition, false, waitCondition);
+                ActiveCustomer.Id = _customerIds.Dequeue();
+            }
+            else
+            {
+                _nextCustomer = Instantiate(_customers.GetRandomItem()).GetComponent<Customer>();
+                _nextCustomer.SetTargetPosition(targetPosition, false, waitCondition);
+                _nextCustomer.Id = _customerIds.Dequeue();
+            }
         }
 
-        private IEnumerator InitQueue()
+        public void Init(List<Guid> customers)
         {
-            yield return new WaitUntil(() => ActiveCustomer.HasArrived);
-            _nextCustomer = Instantiate(_customers.First()).GetComponent<Customer>();
-            _nextCustomer.SetTargetPosition(_firstPosition, false);
+            _customerIds = new Queue<Guid>(customers);
+            CreateCustomer(_payPosition);
+
+            if(_customerIds.Any())
+            {
+                CreateCustomer(_firstPosition, () => !ActiveCustomer.HasArrived);
+            }
         }
 
-        public void CustomerGotPaid()
+        public void CustomerHasPaid()
         {
+            Debug.Log($"Customer has paid: {ActiveCustomer.Id}");
             ActiveCustomer.SetTargetPosition(_leavePosition, true);
-            ActiveCustomer = _nextCustomer;
-            ActiveCustomer.SetTargetPosition(_payPosition, false);
-            _nextCustomer = Instantiate(_customers.First()).GetComponent<Customer>();
-            _nextCustomer.SetTargetPosition(_firstPosition, false);
+
+            if(ActiveCustomer != _nextCustomer)
+            {
+                ActiveCustomer = _nextCustomer;
+                ActiveCustomer.SetTargetPosition(_payPosition, false);
+            }
+
+            if (_customerIds.Any())
+            {
+                CreateCustomer(_firstPosition);
+            }
         }
     }
 }

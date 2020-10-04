@@ -84,7 +84,7 @@ namespace schw3de.ld47
    
             _hitPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             RaycastHit2D[] hits = Physics2D.RaycastAll(_hitPosition, Vector2.zero);
-            var firstArticle = hits.FirstOrDefault(x => x.collider.gameObject.tag == Tags.Article);
+            var firstArticle = hits.FirstOrDefault(x => x.collider.gameObject.tag == Tags.Article || x.collider.gameObject.tag == Tags.NextCustomerStopper);
             var checkIfItsInDragg = hits.FirstOrDefault(x => x.collider.gameObject.tag == Tags.DraggingArea);
 
             if (firstArticle.collider == null || checkIfItsInDragg.collider == null)

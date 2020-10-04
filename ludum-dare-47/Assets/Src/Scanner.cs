@@ -29,7 +29,7 @@ namespace schw3de.ld47
             {
                 _scanTimmer.Start();
                 var articleGo = hit.collider.gameObject;
-                CashierRegister.Instance.AddArticle(articleGo.GetComponentInParent<Article>());
+                Game.Instance.ArticleScanned(articleGo.GetComponentInParent<Article>());
                 _lastHit = hit;
                 Debug.Log($"Got scanned! {articleGo.name}");
             }

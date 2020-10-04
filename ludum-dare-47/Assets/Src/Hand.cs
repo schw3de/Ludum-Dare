@@ -12,6 +12,8 @@ namespace schw3de.ld47
         private Texture2D _error;
         [SerializeField]
         private Texture2D _inactive;
+        [SerializeField]
+        private bool _isIsAlwaysInactive;
 
         private Texture2D _current;
         private bool _isDragging;
@@ -23,6 +25,11 @@ namespace schw3de.ld47
 
         private void Update()
         {
+            if(_isIsAlwaysInactive)
+            {
+                return;
+            }
+
             if(_isDragging)
             {
                 return;
@@ -72,7 +79,7 @@ namespace schw3de.ld47
             }
 
             _current = texture;
-            Cursor.SetCursor(texture, Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(texture, new Vector2(32, 32), CursorMode.Auto);
         }
     }
 }

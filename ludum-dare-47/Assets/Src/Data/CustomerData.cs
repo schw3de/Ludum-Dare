@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace schw3de.ld47
 {
-    [CreateAssetMenu(fileName = "Data", menuName = "Data/CustomerData", order = 1)]
+    [CreateAssetMenu(fileName = "Customer", menuName = "Data/CustomerData", order = 1)]
     public class CustomerData : ScriptableObject
     {
-        public Sprite Sprite;
+        public int AmountArticles;
     }
 }
