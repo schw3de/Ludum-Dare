@@ -75,6 +75,7 @@ namespace schw3de.ld47
             var rigidBody = _draggingObject.GetComponent<Rigidbody2D>();
             rigidBody.isKinematic = false;
             _isDragging = false;
+            Hand.Instance.SetUndragging();
         }
 
         private void Started(InputAction.CallbackContext obj)
@@ -92,6 +93,7 @@ namespace schw3de.ld47
             }
             else
             {
+                Hand.Instance.SetDragging();
                 _isDragging = true;
                 Debug.Log($"Hit: {firstArticle.collider.gameObject}");
                 _draggingObject = firstArticle.collider.gameObject;

@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/cashier.unity
+    path: Assets/Scenes/Cashier.unity
     guid: cf84c778868fdf443bff50f66ec28634
+  - enabled: 1
+    path: Assets/Scenes/Start.unity
+    guid: 2ccb80cf159268546aebae2dca479790
   m_configObjects: {}
