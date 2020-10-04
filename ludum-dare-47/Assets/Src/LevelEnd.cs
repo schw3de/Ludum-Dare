@@ -35,12 +35,19 @@ namespace schw3de.ld47
         
         [SerializeField]
         private GameObject _fired;
+        
+        [SerializeField]
+        private TextMeshProUGUI _dayOver;
 
         private bool _isGameOver;
         private bool _isFired;
 
         private void Awake()
         {
+            _dayOver.text = $"{GameState.Instance.CurrentLevel.LevelName} completed";
+
+            var salary = GameState.Instance.CalculateSalary();
+
             if (GameState.Instance.TotalSalary < 0)
             {
                 _isFired = true;
@@ -50,14 +57,12 @@ namespace schw3de.ld47
                 _isGameOver = true;
             }
 
-            var salary = GameState.Instance.CalculateSalary();
-
             _salary.text = $"Articles Lost: {GameState.Instance.ArticlesLost}{Environment.NewLine}" +
                            $"Articles Fraud: {GameState.Instance.ArticlesFraud}{Environment.NewLine}" +
                            $"Customers unsatisfied: {GameState.Instance.CustomerSatisfactionScore}{Environment.NewLine}" +
                            $"Base salary : +{GameState.Instance.BaseSalery}{Environment.NewLine}" +
-                           $"End salary : {GameState.Instance.BaseSalery} - {GameState.Instance.ArticlesLost} - {GameState.Instance.ArticlesFraud} - {GameState.Instance.CustomerSatisfactionScore}*10 = {salary}{Environment.NewLine}" +
-                           $"Current salary : {GameState.Instance.TotalSalary}";
+                           $"End salary : {GameState.Instance.BaseSalery} - {GameState.Instance.ArticlesLost} - {GameState.Instance.ArticlesFraud} - {GameState.Instance.CustomerSatisfactionScore}*10 = {salary} €{Environment.NewLine}" +
+                           $"Current salary : {GameState.Instance.TotalSalary} €";
 
 
             if (!_isGameOver && !_isFired)

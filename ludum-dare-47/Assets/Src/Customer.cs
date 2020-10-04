@@ -50,7 +50,14 @@ namespace schw3de.ld47.utils
         {
             if(!_stopSatisfactionTimer && _endTimeSatisfaction != default)
             {
-                _satificationTimer.text = Satification.ToString() + " sec(s)";
+                if(Satification < 0)
+                {
+                    _satificationTimer.text = "unsatisfied";
+                }
+                else
+                {
+                    _satificationTimer.text = Satification.ToString() + " sec(s)";
+                }
             }
 
             if(_currentWaitCondition != null && _currentWaitCondition())

@@ -491,6 +491,7 @@ MonoBehaviour:
   _gameOverPanel: {fileID: 1319290036}
   _salary: {fileID: 1093180892}
   _fired: {fileID: 1431265294}
+  _dayOver: {fileID: 2805362}
 --- !u!4 &207322258
 Transform:
   m_ObjectHideFlags: 0
