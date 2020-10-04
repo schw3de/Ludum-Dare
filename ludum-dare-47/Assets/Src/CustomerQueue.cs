@@ -19,6 +19,9 @@ namespace schw3de.ld47
         private Transform _leavePosition;
         [SerializeField]
         private List<GameObject> _customers;
+        [SerializeField]
+        private Transform _instantiatePosition;
+
         private Customer _nextCustomer;
         private Queue<Guid> _customerIds;
 
@@ -29,22 +32,25 @@ namespace schw3de.ld47
         {
             if (ActiveCustomer == null)
             {
-                ActiveCustomer = Instantiate(_customers.GetRandomItem()).GetComponent<Customer>();
+                var randomCustomer = _customers.GetRandomItem();
+                ActiveCustomer = Instantiate(randomCustomer, randomCustomer.transform.position.ChangeX(_instantiatePosition.position.x), Quaternion.identity).GetComponent<Customer>();
                 ActiveCustomer.SetTargetPosition(targetPosition, false, waitCondition);
                 ActiveCustomer.Id = _customerIds.Dequeue();
             }
             else
             {
-                _nextCustomer = Instantiate(_customers.GetRandomItem()).GetComponent<Customer>();
+                var randomCustomer = _customers.GetRandomItem();
+                _nextCustomer = Instantiate(randomCustomer, randomCustomer.transform.position.ChangeX(_instantiatePosition.position.x), Quaternion.identity).GetComponent<Customer>();
                 _nextCustomer.SetTargetPosition(targetPosition, false, waitCondition);
                 _nextCustomer.Id = _customerIds.Dequeue();
             }
         }
 
-        public void Init(List<Guid> customers)
+        public void Init(List<Guid> customers, TimeSpan timeSpan)
         {
             _customerIds = new Queue<Guid>(customers);
             CreateCustomer(_payPosition);
+            ActiveCustomer.SetSatisfaction(timeSpan);
 
             if(_customerIds.Any())
             {
@@ -52,7 +58,7 @@ namespace schw3de.ld47
             }
         }
 
-        public void CustomerHasPaid()
+        public void CustomerHasPaid(TimeSpan timeSpan)
         {
             Debug.Log($"Customer has paid: {ActiveCustomer.Id}");
             ActiveCustomer.SetTargetPosition(_leavePosition, true);
@@ -61,6 +67,7 @@ namespace schw3de.ld47
             {
                 ActiveCustomer = _nextCustomer;
                 ActiveCustomer.SetTargetPosition(_payPosition, false);
+                ActiveCustomer.SetSatisfaction(timeSpan);
             }
 
             if (_customerIds.Any())

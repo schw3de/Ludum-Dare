@@ -11,5 +11,6 @@ namespace schw3de.ld47
     public class CustomerData : ScriptableObject
     {
         public int AmountArticles;
+        public int SecondsSatification;
     }
 }

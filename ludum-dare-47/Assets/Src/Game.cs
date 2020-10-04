@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 namespace schw3de.ld47
 {
@@ -25,6 +26,7 @@ namespace schw3de.ld47
         private CustomerData _currentCustomer;
         private List<Article> _scannedArticles;
         private List<Article> _createdArticles;
+        private Queue<TimeSpan> _timeSatifications;
 
 
         public void Awake()
@@ -39,7 +41,9 @@ namespace schw3de.ld47
             _checkoutButton.onClick.RemoveAllListeners();
             _checkoutButton.onClick.AddListener(() => Checkout());
 
-            CustomerQueue.Instance.Init(_currentLevel.Customers.Select(x => Guid.NewGuid()).ToList());
+            _timeSatifications = new Queue<TimeSpan>(_currentLevel.Customers.Select(x =>TimeSpan.FromSeconds(x.SecondsSatification)));
+
+            CustomerQueue.Instance.Init(_currentLevel.Customers.Select(x => Guid.NewGuid()).ToList(), _timeSatifications.Dequeue());
             HandleNextCustomer();
         }
 
@@ -95,7 +99,13 @@ namespace schw3de.ld47
             Debug.Log($"CustomerSatisfaction: {GameState.Instance.CustomerSatisfactionScore} - Articles: {GameState.Instance.ArticlesScore}");
 
             CashierRegister.Instance.AddTotal();
-            CustomerQueue.Instance.CustomerHasPaid();
+            var timeSpan = TimeSpan.FromSeconds(0);
+            if(_timeSatifications.Any())
+            {
+                timeSpan = _timeSatifications.Dequeue();
+            }
+
+            CustomerQueue.Instance.CustomerHasPaid(timeSpan);
 
             if(!_currentLevel.Customers.Any())
             {
