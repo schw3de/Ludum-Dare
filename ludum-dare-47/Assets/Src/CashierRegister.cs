@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace schw3de.ld47
 {
@@ -13,12 +10,25 @@ namespace schw3de.ld47
     {
         [SerializeField]
         private TextMeshProUGUI _articlesText;
+        [SerializeField]
+        private TextMeshProUGUI _total;
+        [SerializeField]
+        private TextMeshProUGUI _currentArticleCost;
 
-        List<string> _articles = new List<string>();
+        private readonly List<Article> _articles = new List<Article>();
+
+        private void Awake()
+        {
+            _articlesText.text = "...";
+            _total.text = string.Empty;
+            _currentArticleCost.text = "0,0 €";
+        }
 
         public void AddArticle(Article article)
         {
-            _articlesText.text += article + Environment.NewLine;
+            _articlesText.text += $"{article.ArticleName} - {article.Cost} €  {Environment.NewLine}";
+            _currentArticleCost.text = $"{article.Cost} €";
+            _total.text = $"Toal: {_articles.Sum(x => x.Cost)} €";
         }
     }
 }

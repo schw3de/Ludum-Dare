@@ -16,6 +16,16 @@ namespace schw3de.ld47
         {
             if(_isDragging)
             {
+                _hitPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                RaycastHit2D[] hits = Physics2D.RaycastAll(_hitPosition, Vector2.zero);
+ 
+                var checkIfItsInDragg = hits.FirstOrDefault(x => x.collider.gameObject.tag == Tags.DraggingArea);
+                if(checkIfItsInDragg.collider == null)
+                {
+                    CancelDrag();
+                    return;
+                }
+
                 var mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
                 _draggingObject.transform.position = new Vector3(mousePosition.x,
                             mousePosition.y,
@@ -54,10 +64,16 @@ namespace schw3de.ld47
         {
             if(_isDragging)
             {
-                var rigidBody = _draggingObject.GetComponent<Rigidbody2D>();
-                rigidBody.isKinematic = false;
+                CancelDrag();
             }
 
+            _isDragging = false;
+        }
+
+        private void CancelDrag()
+        {
+            var rigidBody = _draggingObject.GetComponent<Rigidbody2D>();
+            rigidBody.isKinematic = false;
             _isDragging = false;
         }
 
@@ -68,8 +84,9 @@ namespace schw3de.ld47
             _hitPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             RaycastHit2D[] hits = Physics2D.RaycastAll(_hitPosition, Vector2.zero);
             var firstArticle = hits.FirstOrDefault(x => x.collider.gameObject.tag == Tags.Article);
+            var checkIfItsInDragg = hits.FirstOrDefault(x => x.collider.gameObject.tag == Tags.DraggingArea);
 
-            if (firstArticle.collider == null)
+            if (firstArticle.collider == null || checkIfItsInDragg.collider == null)
             {
                 Debug.Log("No hit");
             }

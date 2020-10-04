@@ -1,16 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Globalization;
+using UnityEngine;
 
 namespace schw3de.ld47
 {
     public class Article : MonoBehaviour
     {
         [SerializeField]
-        private string _name;
+        private string _articleName;
 
         [SerializeField]
-        private decimal _cost;
-        public string Name => _name;
-        public decimal Cost => _cost;
+        private string _cost;
+        public string ArticleName => _articleName;
+        public decimal Cost => decimal.Parse(_cost);
+
+        private void Awake()
+        {
+            name = ArticleName;
+        }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {

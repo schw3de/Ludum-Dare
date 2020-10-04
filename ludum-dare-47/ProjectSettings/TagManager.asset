@@ -6,6 +6,7 @@ TagManager:
   tags:
   - article
   - barcode
+  - draggingarea
   layers:
   - Default
   - TransparentFX
