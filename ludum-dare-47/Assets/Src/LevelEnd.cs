@@ -32,26 +32,41 @@ namespace schw3de.ld47
 
         [SerializeField]
         private TextMeshProUGUI _salary;
+        
+        [SerializeField]
+        private GameObject _fired;
 
         private bool _isGameOver;
+        private bool _isFired;
 
         private void Awake()
         {
-            _isGameOver = _levels.Last().LevelName == GameState.Instance.CurrentLevel.LevelName;
+            if (GameState.Instance.TotalSalary < 0)
+            {
+                _isFired = true;
+            }
+            else if(_levels.Last().LevelName == GameState.Instance.CurrentLevel.LevelName)
+            {
+                _isGameOver = true;
+            }
 
             var salary = GameState.Instance.CalculateSalary();
 
-            _salary.text = $"Articles Balance: {GameState.Instance.ArticlesScore}{Environment.NewLine}" +
-                           $"Customer Satisfaction: {GameState.Instance.CustomerSatisfactionScore}{Environment.NewLine}" +
+            _salary.text = $"Articles Lost: {GameState.Instance.ArticlesLost}{Environment.NewLine}" +
+                           $"Articles Fraud: {GameState.Instance.ArticlesFraud}{Environment.NewLine}" +
+                           $"Customers unsatisfied: {GameState.Instance.CustomerSatisfactionScore}{Environment.NewLine}" +
                            $"Base salary : +{GameState.Instance.BaseSalery}{Environment.NewLine}" +
-                           $"End salary : {GameState.Instance.BaseSalery} {GameState.Instance.ArticlesScore} * {GameState.Instance.CustomerSatisfactionScore} = {salary}{Environment.NewLine}" +
+                           $"End salary : {GameState.Instance.BaseSalery} - {GameState.Instance.ArticlesLost} - {GameState.Instance.ArticlesFraud} - {GameState.Instance.CustomerSatisfactionScore}*10 = {salary}{Environment.NewLine}" +
                            $"Current salary : {GameState.Instance.TotalSalary}";
 
-            if (!_isGameOver)
+
+            if (!_isGameOver && !_isFired)
             {
                 int currentIndex = _levels.IndexOf(_levels.First(x => x.LevelName == GameState.Instance.CurrentLevel.LevelName));
                 GameState.Instance.CurrentLevel = Instantiate(_levels[++currentIndex]);
             }
+
+            _fired.SetActive(_isFired);
             _gameOverPanel.SetActive(_isGameOver);
 
             EvaluateUpgradeSpeed();
@@ -75,8 +90,7 @@ namespace schw3de.ld47
 
         private void Continue()
         {
-            
-            if(_isGameOver)
+            if(_isFired || _isGameOver)
             {
                 SceneManager.LoadScene(Scenes.Start);
             }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace schw3de.ld47
 {
@@ -13,12 +9,20 @@ namespace schw3de.ld47
             _dontDestroyOnLoad = true;
         }
 
-        public float TreadmillSpeed { get; set; } = 1.5f;
+        public float TreadmillSpeed { get; set; }
 
-        public List<float> TreadmillSpeedAdditive { get; set; } = new List<float> { 0.5f, 0.4f };
+        public List<float> TreadmillSpeedAdditive { get; set; }
 
-        public List<decimal>  TreadmillSpeedCosts { get; set; } = new List<decimal> { 30, 100 };
+        public List<decimal> TreadmillSpeedCosts { get; set; }
 
         public bool AutomaticTreadmill { get; set; }
+
+        public void Reset()
+        {
+            TreadmillSpeed = 1.5f;
+            TreadmillSpeedAdditive = new List<float> { 0.5f, 0.4f };
+            TreadmillSpeedCosts = new List<decimal> { 30, 100 };
+            AutomaticTreadmill = false;
+        }
     }
 }

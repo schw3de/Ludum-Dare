@@ -94,9 +94,11 @@ namespace schw3de.ld47
                 }
             }
 
-            GameState.Instance.CustomerSatisfactionScore -= tmpScansExpected.Count + tmpScansAcutal.Count;
-            GameState.Instance.ArticlesScore -= Math.Abs(totalcostExpected - totalcostActual);
-            Debug.Log($"CustomerSatisfaction: {GameState.Instance.CustomerSatisfactionScore} - Articles: {GameState.Instance.ArticlesScore}");
+            GameState.Instance.ArticlesFraud += tmpScansAcutal.Select(x => x.Cost).Sum();
+            GameState.Instance.ArticlesLost += tmpScansExpected.Select(x => x.Cost).Sum();
+            GameState.Instance.CustomerSatisfactionScore += (int)CustomerQueue.Instance.ActiveCustomer.Satification <= 0 ? 1 : 0;
+            
+            Debug.Log($"CustomerSatisfaction: {GameState.Instance.CustomerSatisfactionScore} - Articles: {GameState.Instance.ArticlesLost}");
 
             CashierRegister.Instance.AddTotal();
             var timeSpan = TimeSpan.FromSeconds(0);

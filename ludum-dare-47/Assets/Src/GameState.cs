@@ -17,19 +17,27 @@ namespace schw3de.ld47
 
         public decimal TotalSalary { get; set; }
 
-        public decimal ArticlesScore { get; set; }
+        public decimal ArticlesFraud { get; set; }
+        public decimal ArticlesLost { get; set; }
 
         public int CustomerSatisfactionScore { get; set; }
 
         public void ClearScore()
         {
-            ArticlesScore = 0;
+            ArticlesFraud = 0;
+            ArticlesLost = 0;
             CustomerSatisfactionScore = 0;
+        }
+
+        public void Reset()
+        {
+            ClearScore();
+            TotalSalary = 0;
         }
 
         public decimal CalculateSalary()
         {
-            var salery = BaseSalery - Math.Abs(ArticlesScore) * Math.Abs(CustomerSatisfactionScore);
+            var salery = BaseSalery - ArticlesLost - ArticlesFraud - CustomerSatisfactionScore * 10;
             TotalSalary += salery;
             return salery;
         }

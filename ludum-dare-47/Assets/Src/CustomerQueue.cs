@@ -62,6 +62,7 @@ namespace schw3de.ld47
         {
             Debug.Log($"Customer has paid: {ActiveCustomer.Id}");
             ActiveCustomer.SetTargetPosition(_leavePosition, true);
+            ActiveCustomer.StopSatisfactionTimer();
 
             if(_nextCustomer != null && ActiveCustomer != _nextCustomer)
             {

@@ -15,12 +15,13 @@ namespace schw3de.ld47.utils
         private bool _destoryOnArrival;
         private Func<bool> _currentWaitCondition;
         private DateTime _endTimeSatisfaction;
+        private bool _stopSatisfactionTimer;
 
         public bool HasArrived { get; private set; }
 
         public Guid Id { get; set; }
 
-        public double Satification => Math.Min(0, Math.Round((_endTimeSatisfaction - DateTime.UtcNow).TotalSeconds));
+        public double Satification => Math.Round((_endTimeSatisfaction - DateTime.UtcNow).TotalSeconds);
 
         public void SetTargetPosition(Transform target, bool destroyOnArrival, Func<bool> currentWaitCondition = null)
         {
@@ -35,6 +36,11 @@ namespace schw3de.ld47.utils
             _endTimeSatisfaction = DateTime.UtcNow + timespan;
         }
 
+        public void StopSatisfactionTimer()
+        {
+            _stopSatisfactionTimer = true;
+        }
+
         private void Awake()
         {
             _satificationTimer.text = string.Empty;
@@ -42,7 +48,7 @@ namespace schw3de.ld47.utils
 
         private void Update()
         {
-            if(_endTimeSatisfaction != default)
+            if(!_stopSatisfactionTimer && _endTimeSatisfaction != default)
             {
                 _satificationTimer.text = Satification.ToString() + " sec(s)";
             }

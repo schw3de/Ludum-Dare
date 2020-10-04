@@ -15,5 +15,3 @@ MonoBehaviour:
   LevelName: Monday
   Customers:
   - {fileID: 11400000, guid: 75a95cf35590f804885c0e6435e65a02, type: 2}
-  - {fileID: 11400000, guid: b6cac4aca694f224884529b8537ca61e, type: 2}
-  - {fileID: 11400000, guid: 75a95cf35590f804885c0e6435e65a02, type: 2}

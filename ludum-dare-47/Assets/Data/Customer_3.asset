@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Customer_3
   m_EditorClassIdentifier: 
   AmountArticles: 1
+  SecondsSatification: 15
