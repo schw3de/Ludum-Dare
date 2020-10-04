@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c77f1da3c7dbe644a0e486d9875d1a5, type: 3}
-  m_Name: Customer_big
+  m_Name: Customer_small_hurry
   m_EditorClassIdentifier: 
-  AmountArticles: 20
-  SecondsSatification: 30
+  AmountArticles: 1
+  SecondsSatification: 11

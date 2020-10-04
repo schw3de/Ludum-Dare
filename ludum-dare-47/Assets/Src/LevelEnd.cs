@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,37 +11,37 @@ namespace schw3de.ld47
     public class LevelEnd : MonoBehaviour
     {
         [SerializeField]
-        private Button _upgradeSpeed;
+        private readonly Button _upgradeSpeed;
 
         [SerializeField]
-        private TextMeshProUGUI _upgradeSpeedText;
+        private readonly TextMeshProUGUI _upgradeSpeedText;
 
         [SerializeField]
-        private Button _upgradeScanner;
+        private readonly Button _upgradeScanner;
 
         [SerializeField]
-        private TextMeshProUGUI _upgradeScannerText;
+        private readonly TextMeshProUGUI _upgradeScannerText;
 
         [SerializeField]
-        private Button _continueButton;
+        private readonly Button _continueButton;
 
         [SerializeField]
-        private Button _restartButton;
+        private readonly Button _restartButton;
 
         [SerializeField]
-        private List<LevelData> _levels;
+        private readonly List<LevelData> _levels;
 
         [SerializeField]
-        private GameObject _gameOverPanel;
+        private readonly GameObject _gameOverPanel;
 
         [SerializeField]
-        private TextMeshProUGUI _salary;
-        
+        private readonly TextMeshProUGUI _salary;
+
         [SerializeField]
-        private GameObject _fired;
-        
+        private readonly GameObject _fired;
+
         [SerializeField]
-        private TextMeshProUGUI _dayOver;
+        private readonly TextMeshProUGUI _dayOver;
 
         private bool _isGameOver;
         private bool _isFired;
@@ -58,7 +56,7 @@ namespace schw3de.ld47
             {
                 _isFired = true;
             }
-            else if(_levels.Last().LevelName == GameState.Instance.CurrentLevel.LevelName)
+            else if (_levels.Last().LevelName == GameState.Instance.CurrentLevel.LevelName)
             {
                 _isGameOver = true;
             }
@@ -105,7 +103,7 @@ namespace schw3de.ld47
 
         private void Continue()
         {
-            if(_isFired || _isGameOver)
+            if (_isFired || _isGameOver)
             {
                 SceneManager.LoadScene(Scenes.Start);
             }
@@ -125,6 +123,7 @@ namespace schw3de.ld47
             Features.Instance.TreadmillSpeeds.RemoveAt(0);
 
             EvaluateUpgradeSpeed();
+            EvaluateUpgradeScanner();
         }
 
         private void UpgradeScanner()
@@ -136,6 +135,7 @@ namespace schw3de.ld47
             Features.Instance.ScannerSpeedSeconds = upgrade.Item2;
 
             EvaluateUpgradeScanner();
+            EvaluateUpgradeSpeed();
         }
 
         private void EvaluateUpgradeScanner()
@@ -153,10 +153,10 @@ namespace schw3de.ld47
         }
 
         private void EvaluateUpgradeSpeed()
-        { 
+        {
             _upgradeSpeed.interactable = Features.Instance.TreadmillSpeedCosts.Any() && Features.Instance.TreadmillSpeedCosts.First() <= GameState.Instance.TotalSalary;
 
-            if(!Features.Instance.TreadmillSpeedCosts.Any())
+            if (!Features.Instance.TreadmillSpeedCosts.Any())
             {
                 _upgradeSpeedText.text = "Sold out!";
             }

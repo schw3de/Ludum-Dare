@@ -24,11 +24,11 @@ namespace schw3de.ld47
         public void Reset()
         {
             ScannerSpeedSeconds = 4;
-            ScannerSpeedCosts = new List<(decimal, int)> { (30, 3), (100, 2), (120, 1) };
+            ScannerSpeedCosts = new List<(decimal, int)> { (20, 3), (40, 2), (50, 1) };
 
             TreadmillSpeed = 1.2f;
             TreadmillSpeeds = new List<float> { 1.7f, 2.2f, 2.7f };
-            TreadmillSpeedCosts = new List<decimal> { 30, 100, 110 };
+            TreadmillSpeedCosts = new List<decimal> { 20, 30, 40 };
 
             AutomaticTreadmill = false;
         }

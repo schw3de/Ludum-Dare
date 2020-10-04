@@ -15,6 +15,6 @@ MonoBehaviour:
   LevelName: Wednesday
   Customers:
   - {fileID: 11400000, guid: 75a95cf35590f804885c0e6435e65a02, type: 2}
-  - {fileID: 11400000, guid: b6cac4aca694f224884529b8537ca61e, type: 2}
-  - {fileID: 11400000, guid: b6cac4aca694f224884529b8537ca61e, type: 2}
+  - {fileID: 11400000, guid: 97484d338b12b64409bdb2a29bbe3079, type: 2}
+  - {fileID: 11400000, guid: 837787b2dc5db174f87fa2f840e80d16, type: 2}
   - {fileID: 11400000, guid: 75a95cf35590f804885c0e6435e65a02, type: 2}
