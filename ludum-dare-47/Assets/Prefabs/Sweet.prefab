@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &157320804927469329
+--- !u!1001 &2271748658809110329
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9,64 +9,40 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4417020249872013820, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.654
+      value: -0.398
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249872013820, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.263
+      value: -0.28
       objectReference: {fileID: 0}
-    - target: {fileID: 4417020249872013820, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4417020249872013820, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4417020249872013822, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4417020249872013822, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4417020249872013822, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4417020249872013822, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 4417020249872013823, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249872013823, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_Offset.x
-      value: -0.0037580729
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249872013823, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_Offset.y
-      value: 0.030064076
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249872013823, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_Size.x
-      value: 0.3611381
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249872013823, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_Size.y
-      value: 0.36865467
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009097, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_Name
-      value: Article Milk
+      value: Sweet
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009098, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 5239b282695b7894bb7d918eb80863f6, type: 3}
+      objectReference: {fileID: 21300000, guid: cb0acb1c6affa1d47bd792c61eaf4996, type: 3}
     - target: {fileID: 4417020249900009099, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_SpriteTilingProperty.border.x
       value: 0
@@ -85,7 +61,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009099, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 2.3333333
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009099, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
@@ -101,31 +77,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009099, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_Size.x
-      value: 2.3333333
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009099, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_Size.y
       value: 0.8888889
       objectReference: {fileID: 0}
-    - target: {fileID: 4417020249900009099, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
+    - target: {fileID: 4417020249900009100, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
+      propertyPath: _articleName
+      value: Sugar Breakpoints
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009100, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: _cost
-      value: 2,49
-      objectReference: {fileID: 0}
-    - target: {fileID: 4417020249900009100, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
-      propertyPath: _articleName
-      value: Milk C#
+      value: 2,98
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009101, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.29
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009101, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.55
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009101, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -165,7 +137,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4417020249900009101, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417020249900009101, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4417020249872013822, guid: 0e2ef0c43281f2040b77fb1bb18ca6c7, type: 3}

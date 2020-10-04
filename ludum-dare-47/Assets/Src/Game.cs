@@ -24,6 +24,7 @@ namespace schw3de.ld47
         private Purchase _currentPurchase;
         private CustomerData _currentCustomer;
         private List<Article> _scannedArticles;
+        private List<Article> _createdArticles;
 
 
         public void Awake()
@@ -60,17 +61,39 @@ namespace schw3de.ld47
 
         private void CreatedArticles(List<GameObject> createdArticles)
         {
+            _createdArticles = createdArticles.Select(x => x.GetComponent<Article>()).ToList();
             _checkoutButton.interactable = true;
         }
 
         public void ArticleScanned(Article article)
         {
+            Sound.Instance.Beep();
             CashierRegister.Instance.AddArticle(article);
         }
 
         private void Checkout()
         {
+            var totalcostExpected =_createdArticles.Select(x => x.Cost).Sum();
+            var totalcostActual = CashierRegister.Instance.Articles.Select(x => x.Cost).Sum();
             _checkoutButton.interactable = false;
+
+            var tmpScansAcutal = CashierRegister.Instance.Articles.ToList();
+            var tmpScansExpected = _createdArticles.ToList();
+
+            foreach (var scannedArticle in tmpScansAcutal.ToList())
+            {
+                var remove = tmpScansExpected.FirstOrDefault(x => x.ArticleName == scannedArticle.ArticleName);
+                if (remove != null)
+                {
+                    tmpScansExpected.Remove(remove);
+                    tmpScansAcutal.Remove(scannedArticle);
+                }
+            }
+
+            GameState.Instance.CustomerSatisfactionScore -= tmpScansExpected.Count + tmpScansAcutal.Count;
+            GameState.Instance.ArticlesScore -= Math.Abs(totalcostExpected - totalcostActual);
+            Debug.Log($"CustomerSatisfaction: {GameState.Instance.CustomerSatisfactionScore} - Articles: {GameState.Instance.ArticlesScore}");
+
             CashierRegister.Instance.AddTotal();
             CustomerQueue.Instance.CustomerHasPaid();
 

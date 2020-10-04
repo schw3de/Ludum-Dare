@@ -46,6 +46,11 @@ MonoBehaviour:
   _checkoutButton: {fileID: 0}
   _articlePrefabs:
   - {fileID: 4567356954804335000, guid: 51be1c9555b5e5141baaaf3ad3f90980, type: 3}
+  - {fileID: 1246255114719391220, guid: afabda5c49d2bd94cb16e63165bba1eb, type: 3}
+  - {fileID: 2507018305147386288, guid: bd11e72ae77ce84459a92d34b7448896, type: 3}
+  - {fileID: 1253192802346830707, guid: 374fc59b44e64654b9dd9c6b68897c4a, type: 3}
+  - {fileID: 5354361700257524714, guid: 85c6ae1aa21a8d248b4adc95e3082cf2, type: 3}
+  - {fileID: 7229402970718495482, guid: 7d6d7c0825d79f543aa53d3811f75531, type: 3}
   _purchasePrefab: {fileID: 1464523672046720235, guid: e8c6d9d8df419d74a9257c8bfc7ae042, type: 3}
   _treadmill: {fileID: 0}
   _levels:

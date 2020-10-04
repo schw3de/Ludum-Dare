@@ -15,7 +15,7 @@ namespace schw3de.ld47
         [SerializeField]
         private TextMeshProUGUI _currentArticleCost;
 
-        private readonly List<Article> _articles = new List<Article>();
+        public readonly List<Article> Articles = new List<Article>();
 
         private bool _isTotal;
 
@@ -29,12 +29,12 @@ namespace schw3de.ld47
             _articlesText.text = string.Empty;
             _total.text = string.Empty;
             _currentArticleCost.text = "0,0 €";
-            _articles.Clear();
+            Articles.Clear();
         }
 
         public void AddTotal()
         {
-            var total = _articles.Sum(x => x.Cost);
+            var total = Articles.Sum(x => x.Cost);
             _currentArticleCost.text = $"Total: {total} €";
             _articlesText.text = _articlesText.text.Insert(0, $"Total - {total} €  {Environment.NewLine}");
             _isTotal = true;
@@ -50,7 +50,7 @@ namespace schw3de.ld47
 
             _articlesText.text = _articlesText.text.Insert(0, $"{article.ArticleName} - {article.Cost} €  {Environment.NewLine}");
             _currentArticleCost.text = $"{article.Cost} €";
-            _articles.Add(article);
+            Articles.Add(article);
         }
     }
 }

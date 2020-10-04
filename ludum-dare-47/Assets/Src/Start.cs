@@ -20,6 +20,7 @@ namespace schw3de.ld47
 
         private void StartTheGame()
         {
+            Sound.Instance.Beep();
             SceneManager.LoadScene(Scenes.Level);
         }
     }
