@@ -9,9 +9,13 @@ namespace schw3de.ld47
             _dontDestroyOnLoad = true;
         }
 
+        public int ScannerSpeedSeconds { get; set; }
+
+        public List<(decimal, int)> ScannerSpeedCosts { get; set; }
+
         public float TreadmillSpeed { get; set; }
 
-        public List<float> TreadmillSpeedAdditive { get; set; }
+        public List<float> TreadmillSpeeds { get; set; }
 
         public List<decimal> TreadmillSpeedCosts { get; set; }
 
@@ -19,9 +23,13 @@ namespace schw3de.ld47
 
         public void Reset()
         {
-            TreadmillSpeed = 1.5f;
-            TreadmillSpeedAdditive = new List<float> { 0.5f, 0.4f };
-            TreadmillSpeedCosts = new List<decimal> { 30, 100 };
+            ScannerSpeedSeconds = 4;
+            ScannerSpeedCosts = new List<(decimal, int)> { (30, 3), (100, 2), (120, 1) };
+
+            TreadmillSpeed = 1.2f;
+            TreadmillSpeeds = new List<float> { 1.7f, 2.2f, 2.7f };
+            TreadmillSpeedCosts = new List<decimal> { 30, 100, 110 };
+
             AutomaticTreadmill = false;
         }
     }

@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d2194fcf5b53ea47a38c0d36d4c0947, type: 3}
-  m_Name: Level_Monday
+  m_Name: Level_Wednesday
   m_EditorClassIdentifier: 
-  LevelName: Monday
+  LevelName: Wednesday
   Customers:
   - {fileID: 11400000, guid: 75a95cf35590f804885c0e6435e65a02, type: 2}
+  - {fileID: 11400000, guid: b6cac4aca694f224884529b8537ca61e, type: 2}
+  - {fileID: 11400000, guid: b6cac4aca694f224884529b8537ca61e, type: 2}
   - {fileID: 11400000, guid: 75a95cf35590f804885c0e6435e65a02, type: 2}

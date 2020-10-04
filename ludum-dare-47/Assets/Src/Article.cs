@@ -12,7 +12,7 @@ namespace schw3de.ld47
         [SerializeField]
         private string _cost;
         public string ArticleName => _articleName;
-        public decimal Cost => decimal.Parse(_cost);
+        public decimal Cost => decimal.Parse(_cost, new CultureInfo("de-De"));
 
         public Guid Id { get; private set; } = Guid.NewGuid();
 
