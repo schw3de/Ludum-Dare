@@ -53,6 +53,7 @@ namespace schw3de.ld48
             var targetAlpha = SpriteRenderer.color;
             targetAlpha.a = 1;
             var duration =  SpriteRenderer.color.a == 0 ? _durationBreathIn : SpriteRenderer.color.a * _durationBreathIn;
+            Debug.Log($"Breath in with duration: {duration}");
             _currentLerp = StartCoroutine(LerpAlpha(SpriteRenderer.color, targetAlpha, duration));
             //Animator.Play("Expand");
             State = BreathCircleState.BreathIn;
@@ -75,6 +76,7 @@ namespace schw3de.ld48
                 duration = Math.Abs(SpriteRenderer.color.a - 1) * _durationBreathOut;
             }
 
+            Debug.Log($"Breath out with duration: {duration}");
             _currentLerp = StartCoroutine(LerpAlpha(SpriteRenderer.color, targetAlpha, duration));
             //Animator.Play("Shrink");
             State = BreathCircleState.BreathOut;

@@ -9,6 +9,7 @@ namespace schw3de.ld48
     public enum DialogResultType
     {
         Tutorial_1,
-        Tutorial_2
+        Tutorial_2,
+        Tutorial_3
     }
 }
