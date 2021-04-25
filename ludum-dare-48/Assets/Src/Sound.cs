@@ -12,6 +12,7 @@ namespace schw3de.ld48
         public AudioClip BreathInClip;
         public AudioClip BreathOutClip;
         public AudioClip BirdsMorning;
+        public AudioClip PageflipClip;
 
         private AudioSource _audioSource;
 
@@ -28,6 +29,11 @@ namespace schw3de.ld48
         public void BreathOut()
         {
             _audioSource.PlayOneShot(BreathOutClip);
+        }
+
+        public void Pageflip()
+        {
+            _audioSource.PlayOneShot(PageflipClip);
         }
     }
 }

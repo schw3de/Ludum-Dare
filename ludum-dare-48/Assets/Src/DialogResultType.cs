@@ -12,6 +12,8 @@ namespace schw3de.ld48
         Tutorial_2,
         Tutorial_3,
         Tutorial_4,
-        Meditation_1
+        Meditation_1,
+        Meditation_3,
+        Start
     }
 }

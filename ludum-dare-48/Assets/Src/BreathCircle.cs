@@ -10,7 +10,6 @@ namespace schw3de.ld48
 {
     public class BreathCircle : Singleton<BreathCircle>
     {
-        //public Animator Animator;
         public SpriteRenderer SpriteRenderer;
         public BreathCircleState State;
 
@@ -22,24 +21,10 @@ namespace schw3de.ld48
 
         private void Start()
         {
-            //Animator = GetComponent<Animator>();
             if(State == BreathCircleState.Empty && SpriteRenderer.color.a != 0)
             {
                 SpriteRenderer.SetAlpha(0);
-                //Debug.Log($"Sprite Renderer: {SpriteRenderer.color.a}");
             }
-        }
-
-        private void Update()
-        {
-            //if (State == BreathCircleState.Increase && !SpriteRenderer.AddAlpha(0.001f))
-            //{
-            //    CallCallback();
-            //}
-            //else if (State == BreathCircleState.Decrease && !SpriteRenderer.SubstractAlpha(0.01f))
-            //{
-            //    CallCallback();
-            //}
         }
 
         public void BreathIn(Action callback)
@@ -52,10 +37,13 @@ namespace schw3de.ld48
             _callback = callback;
             var targetAlpha = SpriteRenderer.color;
             targetAlpha.a = 1;
-            var duration =  SpriteRenderer.color.a == 0 ? _durationBreathIn : SpriteRenderer.color.a * _durationBreathIn;
+            var duration = _durationBreathIn;
+            if(SpriteRenderer.color.a != 0)
+            {
+                duration = Math.Abs(SpriteRenderer.color.a - 1) * _durationBreathIn;
+            }
             Debug.Log($"Breath in with duration: {duration}");
             _currentLerp = StartCoroutine(LerpAlpha(SpriteRenderer.color, targetAlpha, duration));
-            //Animator.Play("Expand");
             State = BreathCircleState.BreathIn;
         }
 
@@ -73,12 +61,12 @@ namespace schw3de.ld48
             var duration = _durationBreathOut;
             if(SpriteRenderer.color.a != 1)
             {
-                duration = Math.Abs(SpriteRenderer.color.a - 1) * _durationBreathOut;
+                duration = SpriteRenderer.color.a * _durationBreathOut;
+                // duration = Math.Abs(SpriteRenderer.color.a - 1) * _durationBreathOut;
             }
 
             Debug.Log($"Breath out with duration: {duration}");
             _currentLerp = StartCoroutine(LerpAlpha(SpriteRenderer.color, targetAlpha, duration));
-            //Animator.Play("Shrink");
             State = BreathCircleState.BreathOut;
         }
 

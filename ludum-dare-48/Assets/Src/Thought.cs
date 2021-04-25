@@ -1,7 +1,5 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace schw3de.ld48
 {
@@ -9,14 +7,17 @@ namespace schw3de.ld48
     {
         public TextMeshPro Text;
 
-        private string[] thoughtsTemplate = new [] { "Thought" };
+        private readonly string[] thoughtsTemplate = new[] { "Thought" };
         private bool _canLetGo;
         private bool _isLettingGo;
-        private Action _flewAwayCallback;
 
         public void FlewAway()
         {
-            _flewAwayCallback();
+            if (!_isLettingGo)
+            {
+                return;
+            }
+
             Destroy(gameObject);
         }
 
@@ -26,13 +27,11 @@ namespace schw3de.ld48
             Text.text = thoughtsTemplate.GetRandomItem();
         }
 
-        public void SetFlewAwayCallback(Action flewAwayCallback) => _flewAwayCallback = flewAwayCallback;
-
-        public void LetGo()
+        public bool LetGo()
         {
-            if(!_canLetGo)
+            if (!_canLetGo)
             {
-                return;
+                return false;
             }
             Taker.Instance.StopDragging();
             _isLettingGo = true;
@@ -40,6 +39,7 @@ namespace schw3de.ld48
             var rigidbody = GetComponent<Rigidbody2D>();
             rigidbody.freezeRotation = false;
             //rigidbody.gravityScale = -1;
+            return true;
         }
 
         public bool CanBeDragged() => !_isLettingGo;

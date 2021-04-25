@@ -28,6 +28,7 @@ namespace schw3de.ld48
         public void Show(Action<DialogResultType> callback, params DialogResultType[] buttonResultType)
         {
             _callback = callback;
+            Sound.Instance.Pageflip();
             Animator.Play("FlyIn");
 
             Button1.Apply(() => FlyOut(buttonResultType[0]));
