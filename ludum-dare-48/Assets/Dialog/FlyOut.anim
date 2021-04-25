@@ -113,4 +113,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 1
+    functionName: FlyOutExit
+    data: 
+    objectReferenceParameter: {fileID: 1159020250527550113, guid: b2dcd293378dbc040b914917b9b70ed4, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

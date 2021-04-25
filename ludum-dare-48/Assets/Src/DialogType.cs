@@ -8,6 +8,8 @@ namespace schw3de.ld48
 {
     public enum DialogType
     {
-        Start
+        Start,
+        Tutorial_1,
+        Tutorial_2
     }
 }
