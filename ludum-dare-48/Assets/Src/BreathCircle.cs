@@ -17,7 +17,7 @@ namespace schw3de.ld48
         private bool _increase;
         private Action _callback;
         private float _durationBreathIn = 4;
-        private float _durationBreathOut = 6;
+        private float _durationBreathOut = 4.5f;
         private Coroutine _currentLerp;
 
         private void Start()

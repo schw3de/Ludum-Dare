@@ -11,6 +11,7 @@ namespace schw3de.ld48
         Start,
         Tutorial_1,
         Tutorial_2,
-        Tutorial_3
+        Tutorial_3,
+        Tutorial_4
     }
 }

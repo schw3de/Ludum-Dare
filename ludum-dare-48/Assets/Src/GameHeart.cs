@@ -18,16 +18,12 @@ namespace schw3de.ld48
 
         private Dictionary<DialogType, Dialog> _dialogs;
         private Timer _timer = new Timer();
-        private int _currentDialogIndex = 0;
         private GameState _gameState = GameState.Intro;
         private int _breathCounts = 0;
-        private int _firstTutorialBreathCounts = 8;
+        private int _firstTutorialBreathCounts = 2;
         private int _thoughtsCounts = 0;
         private int _secondTutorialthoughtsCounter = 5;
         private Thought _currentThought;
-        
-
-        //private Dialog CurrentDialog => _dialogs[_currentDialogIndex];
 
         private void Start()
         {
@@ -41,12 +37,12 @@ namespace schw3de.ld48
             }
 
             //ShowDialog(DialogType.Start);
-            ShowDialog(DialogType.Tutorial_3);
+            ShowDialog(DialogType.Tutorial_2);
         }
 
         private void Update()
         {
-            if (_gameState == GameState.Meditation_1)
+            if (_gameState == GameState.Meditation_1 || _gameState == GameState.Meditation_2)
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -55,28 +51,27 @@ namespace schw3de.ld48
                 }
                 else if (Input.GetKeyUp(KeyCode.Space))
                 {
+                    if(_currentThought != null)
+                    {
+                        _currentThought.LetGo();
+                    }
                     Debug.Log("Keyup space");
                     BreathCircle.Instance.BreathOut(Breathout);
                 }
             }
-            else if(_gameState == GameState.Meditation_2)
-            {
-                if(_currentThought == null)
-                {
-                    _currentThought = CreateThought();
-                }
-            }
         }
 
-        private Thought CreateThought()
+        private void ThoughtFlewAwayCallback()
         {
-            return Instantiate(ThoughtPrefab, ThoughContainer.transform).GetComponent<Thought>();
+            _thoughtsCounts++;
+            _currentThought = null;
         }
+
+        private Thought CreateThought() => Instantiate(ThoughtPrefab, ThoughContainer.transform).GetComponent<Thought>();
 
         private void Breathout()
         {
             _breathCounts++;
-            SetBreathCounter();
             Sound.Instance.BreathOut();
             Debug.Log("Breath Decreased!");
 
@@ -84,6 +79,24 @@ namespace schw3de.ld48
             {
                 _gameState = GameState.Tutorial;
                 ShowDialog(DialogType.Tutorial_3);
+            }
+            else if (_gameState == GameState.Meditation_2)
+            {
+                if (_currentThought == null)
+                {
+                    SetThoughtsCounter();
+
+                    if (_thoughtsCounts == _secondTutorialthoughtsCounter)
+                    {
+                        _gameState = GameState.Tutorial;
+                        ShowDialog(DialogType.Tutorial_4);
+                    }
+                    else
+                    {
+                        _currentThought = CreateThought();
+                        _currentThought.SetFlewAwayCallback(ThoughtFlewAwayCallback);
+                    }
+                }
             }
         }
 
@@ -107,12 +120,19 @@ namespace schw3de.ld48
                     break;
 
                 case DialogType.Tutorial_1:
-                case DialogType.Tutorial_2:
                     dialog.Show(DialogCallback, DialogResultType.Tutorial_2);
+                    break;
+
+                case DialogType.Tutorial_2:
+                    dialog.Show(DialogCallback, DialogResultType.Meditation_1);
                     break;
 
                 case DialogType.Tutorial_3:
                     dialog.Show(DialogCallback, DialogResultType.Tutorial_3);
+                    break;
+
+                case DialogType.Tutorial_4:
+                    dialog.Show(DialogCallback, DialogResultType.Tutorial_4);
                     break;
             }
         }
@@ -124,41 +144,49 @@ namespace schw3de.ld48
             {
                 case DialogResultType.Tutorial_1:
                     _gameState = GameState.Tutorial;
+                    ShowDialog(DialogType.Tutorial_1);
+                    break;
+
+                case DialogResultType.Tutorial_2:
+                    _gameState = GameState.Tutorial;
                     ShowDialog(DialogType.Tutorial_2);
                     break;
-                case DialogResultType.Tutorial_2:
-                    SetBreathCounter();
-                    Counter.gameObject.SetActive(true);
+
+                case DialogResultType.Meditation_1:
                     _gameState = GameState.Meditation_1;
+                    Counter.gameObject.SetActive(true);
+                    SetBreathCounter();
                     break;
 
                 case DialogResultType.Tutorial_3:
-                    SetThoughtsCounter();
+                    Counter.gameObject.SetActive(true);
                     _gameState = GameState.Meditation_2;
+                    SetThoughtsCounter();
+                    break;
+
+                case DialogResultType.Tutorial_4:
+                    Counter.gameObject.SetActive(false);
+                    _breathCounts = 0;
+                    _thoughtsCounts = 0;
+                    ShowDialog(DialogType.Start);
                     break;
             }
         }
 
-        public void DialogExit(DialogResultType dialogResultType)
+        private void SetBreathCounter()
         {
-            //Dialogs.First().Hide(FirstDialogHided);
+            if(_gameState == GameState.Meditation_1)
+            {
+                Counter.text = $"Breaths: {_breathCounts} / {_firstTutorialBreathCounts}";
+            }
         }
 
-        private void ShowFirstDialog()
+        private void SetThoughtsCounter()
         {
-            //Dialogs.First().Show(FirstDialogFinished);
+            if(_gameState == GameState.Meditation_2)
+            {
+                Counter.text = $"Thoughts : {_thoughtsCounts} / {_secondTutorialthoughtsCounter}";
+            }
         }
-
-        private void FirstDialogFinished()
-        {
-            Debug.Log("First Dialog Finished");
-        }
-
-        private void FirstDialogHided()
-        {
-        }
-
-        private void SetBreathCounter() => Counter.text = $"Breathcounter: {_breathCounts} / {_firstTutorialBreathCounts}";
-        private void SetThoughtsCounter() => Counter.text = $"Thoughts: {_thoughtsCounts} / {_secondTutorialthoughtsCounter}";
     }
 }
