@@ -20,10 +20,10 @@ namespace schw3de.ld48
         private Timer _timer = new Timer();
         private GameState _gameState = GameState.Intro;
         private int _breathCounts = 0;
-        private int _firstTutorialBreathCounts = 2;
+        private int _firstTutorialBreathCounts = 8;
         private int _thoughtsCounts = 0;
         private int _secondTutorialthoughtsCounter = 5;
-        private int _meditationsthoughtsCounter = 2;
+        private int _meditationsthoughtsCounter = 10;
         private Thought _currentThought;
 
         private void Start()

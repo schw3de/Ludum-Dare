@@ -7,7 +7,7 @@ namespace schw3de.ld48
     {
         public TextMeshPro Text;
 
-        private readonly string[] thoughtsTemplate = new[] { "Thought" };
+        private readonly string[] thoughtsTemplate = new[] { "Past", "Future", "Money", "Work", "Homework", "Memory", "Food", "Eating", "Stuff", "Cleaning", "Regrets", "Doubts", "Childhood", "Old Friends", "Parents", "Pain", "Worries", "Finances", "Household", "Things", "Netflix", "Movies" };
         private bool _canLetGo;
         private bool _isLettingGo;
 
@@ -38,7 +38,6 @@ namespace schw3de.ld48
             GetComponent<Animator>().enabled = false;
             var rigidbody = GetComponent<Rigidbody2D>();
             rigidbody.freezeRotation = false;
-            //rigidbody.gravityScale = -1;
             return true;
         }
 
