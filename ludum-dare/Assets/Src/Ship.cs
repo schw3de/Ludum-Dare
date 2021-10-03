@@ -21,11 +21,11 @@ namespace schw3de.ld49
 
         public ParticleSystem ExplosionParticles;
 
-        public Vector2 Force = new Vector2(0,1);
+        public float ThrustForce = 100;
         public float RotationSpeed = 0.5f;
 
-        public decimal FuelCost = 0.001m;
-        public decimal Fuel = 1000;
+        public decimal FuelCost = 0.05m;
+        public decimal Fuel = 100;
 
         public float VelocityImpact = 5f;
 
@@ -35,6 +35,7 @@ namespace schw3de.ld49
 
         public TextMeshProUGUI OutComeTitle;
         public TextMeshProUGUI OutComeSubtitle;
+        public TextMeshProUGUI FuelRecord;
         public GameObject Menu;
 
         public Button RetryButton;
@@ -44,6 +45,7 @@ namespace schw3de.ld49
         private bool _turnLeft;
         private bool _turnRight;
         private bool _noControl;
+        private decimal _fuelRecord = 100;
 
         private AudioSource _audioSource;
         private DateTime _delayBetweenThrusts;
@@ -51,6 +53,9 @@ namespace schw3de.ld49
 
         private void Start()
         {
+            _fuelRecord = GetFuelRound(Convert.ToDecimal(PlayerPrefs.GetString("Fuelrecord", "0")));
+            FuelRecord.text = FuelToString(_fuelRecord);
+
             Menu.SetActive(false);
             _audioSource = GetComponentInChildren<AudioSource>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -60,6 +65,12 @@ namespace schw3de.ld49
 
 
             RetryButton.Apply(OnRetry);
+
+            var euler = transform.eulerAngles;
+            euler.z = UnityEngine.Random.Range(-90.0f, 90.0f);
+            transform.eulerAngles = euler;
+
+            transform.position = transform.position.ChangeX(UnityEngine.Random.Range(-18.0f, 18.0f));
         }
 
         void Update()
@@ -81,7 +92,7 @@ namespace schw3de.ld49
                 if (_delayBetweenThrusts < DateTime.UtcNow)
                 {
                     _audioSource.PlayOneShot(ThrustAudio);
-                    _delayBetweenThrusts = DateTime.UtcNow.AddSeconds(0.5f);
+                    _delayBetweenThrusts = DateTime.UtcNow.AddSeconds(1f);
                 }
 
 
@@ -102,12 +113,12 @@ namespace schw3de.ld49
                 Thruster2Particles.Stop();
             }
 
-            if(Input.GetKey(KeyCode.A))
+            if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.RightArrow))
             {
                 _turnRight = true;
                 _turnLeft = false;
             }
-            else if(Input.GetKey(KeyCode.D))
+            else if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.LeftArrow))
             {
                 _turnLeft = true;
                 _turnRight = false;
@@ -123,8 +134,10 @@ namespace schw3de.ld49
         {
             if(_thrust)
             {
-                var force = Force * transform.up;
-                _rigidbody2D.AddForce(force);
+                //var force = Force * transform.forward; // transform.up;
+                //var force = Force * transform.forward; // transform.up;
+                //_rigidbody2D.AddRelativeForce(force);
+                _rigidbody2D.AddRelativeForce(transform.up * ThrustForce);
             }
 
             if(_turnLeft)
@@ -139,26 +152,39 @@ namespace schw3de.ld49
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            if(_noControl)
+            {
+                return;
+            }
+
+            if(collision.gameObject.tag == "Gras")
+            {
+                GameOver();
+            }
+
             if(collision.gameObject.tag == "Ground")
             {
-                _noControl = true;
                 Debug.Log($"Collision! {Math.Abs(collision.relativeVelocity.y)}");
                 if (Math.Abs(collision.relativeVelocity.y) > VelocityImpact)
                 {
-                    // Game Over lost
-                    ExplosionParticles.Play();
-                    _audioSource.PlayOneShot(ExplosionAudio);
-                    // Tried something dramatic._rigidbody2D.AddForce(new Vector2(3f, 300f), ForceMode2D.Impulse);
-                    OutComeTitle.text = "Game Over!";
-                    OutComeSubtitle.text = "You crashed the ship! Next time you will do better!";
-                    _showMenuIn = DateTime.UtcNow.AddSeconds(1);
+                    GameOver();
                 }
                 else
                 {
-                    // Win
+                    _noControl = true;
                     _audioSource.PlayOneShot(WinAudio);
-                    OutComeTitle.text = "Success!";
-                    OutComeSubtitle.text = "Congratulation! You are a great pilot!";
+                    if (Math.Round(_fuelRecord) < Math.Round(Fuel))
+                    {
+                        OutComeTitle.text = "New Fuel Record!";
+                        OutComeSubtitle.text = $"Congratulation!\nNew Fuelrecord: {FuelToString()}!";
+                        PlayerPrefs.SetString("Fuelrecord", GetFuelRound().ToString());
+                    }
+                    else
+                    {
+                        OutComeTitle.text = "Success!";
+                        OutComeSubtitle.text = $"Congratulation!\nFuel used:{FuelToString()}\nTry to beat your Fuelrecord!";
+                    }
+
                     _showMenuIn = DateTime.UtcNow.AddSeconds(0.5f);
                 }
             }
@@ -169,5 +195,28 @@ namespace schw3de.ld49
             SceneManager.LoadScene("Level");
         }
 
+        private void GameOver()
+        {
+            _noControl = true;
+            // Game Over lost
+            ExplosionParticles.Play();
+            _audioSource.PlayOneShot(ExplosionAudio);
+            // Tried something dramatic._rigidbody2D.AddForce(new Vector2(3f, 300f), ForceMode2D.Impulse);
+            OutComeTitle.text = "Game Over!";
+            OutComeSubtitle.text = "You crashed the ship!\nNext time you will do better!";
+            _showMenuIn = DateTime.UtcNow.AddSeconds(2);
+        }
+
+        private string FuelToString()
+            => FuelToString(GetFuelRound());
+
+        private static string FuelToString(decimal fuel)
+            => $"{fuel}%";
+
+        private decimal GetFuelRound(decimal fuel)
+            => Math.Round(fuel);
+
+        private decimal GetFuelRound()
+            => GetFuelRound(Fuel);
     }
 }

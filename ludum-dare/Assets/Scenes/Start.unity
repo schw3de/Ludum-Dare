@@ -1473,8 +1473,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 66.02308, y: -32.36429}
-  m_SizeDelta: {x: 469.3083, y: 86.7827}
+  m_AnchoredPosition: {x: 17.5921, y: -32.36429}
+  m_SizeDelta: {x: 566.1701, y: 86.7827}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &239403420
 MonoBehaviour:
@@ -1498,11 +1498,12 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Controls
 
-    A: Steer Left
+    A or Left Arrow: Steer Left
 
-    D: Steer Right
+    D or Right Arrow: Steer
+    Right
 
-    W: Thrust'
+    Space: Thrust'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ac70b1bd7a154134db821f3cca2c7bdc, type: 2}
   m_sharedMaterial: {fileID: 4185327213070578681, guid: ac70b1bd7a154134db821f3cca2c7bdc, type: 2}
@@ -1733,7 +1734,7 @@ MonoBehaviour:
   Thrusters2: {fileID: 0}
   Thruster2Particles: {fileID: 313999100}
   ExplosionParticles: {fileID: 421032978}
-  Force: {x: 0, y: 60}
+  ThrustForce: 100
   RotationSpeed: 1
   VelocityImpact: 0.1
   ThrustAudio: {fileID: 8300000, guid: 254f1c676a7e68742b99dc2e32b1c17a, type: 3}
@@ -1741,6 +1742,7 @@ MonoBehaviour:
   WinAudio: {fileID: 0}
   OutComeTitle: {fileID: 0}
   OutComeSubtitle: {fileID: 0}
+  FuelRecord: {fileID: 0}
   Menu: {fileID: 0}
   RetryButton: {fileID: 0}
 --- !u!1 &254973053
