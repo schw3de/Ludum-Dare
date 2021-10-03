@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace schw3de.ld49
 {
-    public class ShipMovement : MonoBehaviour
+    public class Ship : Singleton<Ship>
     {
 
         public Transform Thrusters1;
@@ -19,10 +19,14 @@ namespace schw3de.ld49
         public Vector2 Force = new Vector2(0,1);
         public float RotationSpeed = 0.5f;
 
+        public decimal FuelCost = 0.1m;
+        public decimal Fuel = 100;
+
         private Rigidbody2D _rigidbody2D;
         private bool _thrust;
         private bool _turnLeft;
         private bool _turnRight;
+
 
         private void Start()
         {
@@ -31,7 +35,7 @@ namespace schw3de.ld49
 
         void Update()
         {
-            if(Input.GetKey(KeyCode.Space))
+            if(Input.GetKey(KeyCode.Space) && Fuel > 0)
             {
                 Debug.Log("Add Force");
                 //Thruster1Particles.Play();
@@ -39,6 +43,14 @@ namespace schw3de.ld49
                 //_rigidbody2D.AddForceAtPosition(direction.normalized * Force, Thrusters2.position);
                 //_rigidbody2D.AddForceAtPosition()
                 _thrust = true;
+                if(Fuel <= 0)
+                {
+                    Fuel = 0;
+                }
+                else
+                {
+                    Fuel -= FuelCost;
+                }
             }
             else
             {
@@ -68,7 +80,7 @@ namespace schw3de.ld49
             if(_thrust)
             {
                 var force = Force * transform.up;
-                //Debug.Log($"Force: {force}");
+                Debug.Log($"Force: {force}");
                 //_rigidbody2D.AddForce(force);
                 //_rigidbody2D.AddForceAtPosition(force, Thrusters1.transform.position);
                 _rigidbody2D.AddForce(force);
