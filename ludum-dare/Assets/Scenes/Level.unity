@@ -1587,7 +1587,7 @@ Rigidbody2D:
   m_GravityScale: 0.2
   m_Material: {fileID: 6200000, guid: bd9366898a065e242a9eb5b3832b158b, type: 2}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!114 &249471749
@@ -2192,7 +2192,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &363200958
 RectTransform:
   m_ObjectHideFlags: 0

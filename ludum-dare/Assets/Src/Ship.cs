@@ -51,6 +51,10 @@ namespace schw3de.ld49
         private DateTime _delayBetweenThrusts;
         private DateTime _showMenuIn = DateTime.MinValue;
 
+        private Vector3 _lastPosition;
+        private bool _isStandingStill;
+        private DateTime _checkStandingStill;
+
         private void Start()
         {
             _fuelRecord = GetFuelRound(Convert.ToDecimal(PlayerPrefs.GetString("Fuelrecord", "0")));
@@ -62,7 +66,6 @@ namespace schw3de.ld49
             ExplosionParticles.Stop();
             Thruster1Particles.Play();
             Thruster2Particles.Play();
-
 
             RetryButton.Apply(OnRetry);
 
@@ -80,7 +83,6 @@ namespace schw3de.ld49
                 Menu.SetActive(true);
             }
 
-            // Debug.Log(_rigidbody2D.velocity);
             if(!_noControl && Input.GetKey(KeyCode.Space) && Fuel > 0)
             {
                 if(!Thruster1Particles.isPlaying)
@@ -134,9 +136,6 @@ namespace schw3de.ld49
         {
             if(_thrust)
             {
-                //var force = Force * transform.forward; // transform.up;
-                //var force = Force * transform.forward; // transform.up;
-                //_rigidbody2D.AddRelativeForce(force);
                 _rigidbody2D.AddRelativeForce(transform.up * ThrustForce);
             }
 
@@ -148,6 +147,47 @@ namespace schw3de.ld49
             {
                 _rigidbody2D.AddTorque(-RotationSpeed);
             }
+
+            if(_checkStandingStill < DateTime.UtcNow)
+            {
+                _isStandingStill = _lastPosition == transform.position;
+                _lastPosition = transform.position;
+                _checkStandingStill = DateTime.UtcNow.AddSeconds(0.5f);
+            }
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            if(_noControl || !_isStandingStill || collision.gameObject.tag != "Ground")
+            {
+                return;
+            }
+
+            Debug.Log($"Rotation Euler: {transform.rotation.eulerAngles.z}");
+            Debug.Log($"Rotation : {transform.rotation.z}");
+
+            if (Math.Abs(transform.rotation.eulerAngles.z) > 1 && Math.Abs(transform.rotation.eulerAngles.z) < 359)
+            {
+                Debug.Log("Game Over because of euler angles!");
+                GameOver();
+                return;
+            }
+
+            _noControl = true;
+            _audioSource.PlayOneShot(WinAudio);
+            if (Math.Round(_fuelRecord) < Math.Round(Fuel))
+            {
+                OutComeTitle.text = "New Fuel Record!";
+                OutComeSubtitle.text = $"Congratulation!\nNew Fuelrecord: {FuelToString()}!";
+                PlayerPrefs.SetString("Fuelrecord", GetFuelRound().ToString());
+            }
+            else
+            {
+                OutComeTitle.text = "Success!";
+                OutComeSubtitle.text = $"Congratulation!\nFuel used:{FuelToString()}\nTry to beat your Fuelrecord!";
+            }
+
+            _showMenuIn = DateTime.UtcNow.AddSeconds(0.5f);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -168,24 +208,6 @@ namespace schw3de.ld49
                 if (Math.Abs(collision.relativeVelocity.y) > VelocityImpact)
                 {
                     GameOver();
-                }
-                else
-                {
-                    _noControl = true;
-                    _audioSource.PlayOneShot(WinAudio);
-                    if (Math.Round(_fuelRecord) < Math.Round(Fuel))
-                    {
-                        OutComeTitle.text = "New Fuel Record!";
-                        OutComeSubtitle.text = $"Congratulation!\nNew Fuelrecord: {FuelToString()}!";
-                        PlayerPrefs.SetString("Fuelrecord", GetFuelRound().ToString());
-                    }
-                    else
-                    {
-                        OutComeTitle.text = "Success!";
-                        OutComeSubtitle.text = $"Congratulation!\nFuel used:{FuelToString()}\nTry to beat your Fuelrecord!";
-                    }
-
-                    _showMenuIn = DateTime.UtcNow.AddSeconds(0.5f);
                 }
             }
         }
