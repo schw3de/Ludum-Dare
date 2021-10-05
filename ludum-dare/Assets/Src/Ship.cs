@@ -115,12 +115,12 @@ namespace schw3de.ld49
                 Thruster2Particles.Stop();
             }
 
-            if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.RightArrow))
+            if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
             {
                 _turnRight = true;
                 _turnLeft = false;
             }
-            else if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.LeftArrow))
+            else if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             {
                 _turnLeft = true;
                 _turnRight = false;
