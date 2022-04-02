@@ -27,11 +27,17 @@ namespace schw3de.ld
 
                 cubeSide.Init(cubeSideIndex,
                               tmp_FontAsset,
-                              OnMouseDown,
-                              OnCountdownChange);
+                              new CubeSideActions(OnLeftClick,
+                                                  OnRightClick,
+                                                  OnCountdownChange));
 
                 CubeSides[cubeSideIndex] = cubeSide;
             }
+        }
+
+        private void OnRightClick(CubeSide obj)
+        {
+            CameraMovement.Instance.SetTarget(transform);
         }
 
         public void StartCountDowns(int countdownIndex)
@@ -64,10 +70,11 @@ namespace schw3de.ld
             }
         }
 
-        private void OnMouseDown(CubeSide cubeSide)
+        private void OnLeftClick(CubeSide cubeSide)
         {
             cubeSide.SetCountdown(8);
             OnCountdownChange(cubeSide);
+
             //foreach(var cubeSide in CubeSides)
             //{
             //    cubeSide.SetCountdown(9);

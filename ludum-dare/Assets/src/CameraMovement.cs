@@ -10,17 +10,18 @@ namespace schw3de.ld
     /// <summary>
     /// Thx to for orignal code https://www.emmaprats.com/p/how-to-rotate-the-camera-around-an-object-in-unity3d/
     /// </summary>
-    public class CameraMovement : MonoBehaviour
+    public class CameraMovement : Singleton<CameraMovement>
     {
-        [SerializeField] private Camera cam;
-        [SerializeField] private Transform target;
-        [SerializeField] private float distanceToTarget = 10;
+        [SerializeField] private Camera _cam;
+        [SerializeField] private Vector3 _target;
+        [SerializeField] private float _distanceToTarget = 10;
 
         private Vector3 previousPosition;
 
-        private void Awake()
+        private new void Awake()
         {
-            previousPosition = cam.ScreenToViewportPoint(Input.mousePosition);
+            base.Awake();
+            previousPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
             HandleMovement();
         }
 
@@ -28,7 +29,7 @@ namespace schw3de.ld
         {
             if (Input.GetMouseButtonDown(0))
             {
-                previousPosition = cam.ScreenToViewportPoint(Input.mousePosition);
+                previousPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
             }
             else if (Input.GetMouseButton(0))
             {
@@ -36,20 +37,26 @@ namespace schw3de.ld
             }
         }
 
+        public void SetTarget(Transform target)
+        {
+            _target = target.position;
+            HandleMovement();
+        }
+
         private void HandleMovement()
         {
-            Vector3 newPosition = cam.ScreenToViewportPoint(Input.mousePosition);
+            Vector3 newPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
             Vector3 direction = previousPosition - newPosition;
 
             float rotationAroundYAxis = -direction.x * 180; // camera moves horizontally
             float rotationAroundXAxis = direction.y * 180; // camera moves vertically
 
-            cam.transform.position = target.position;
+            _cam.transform.position = _target;
 
-            cam.transform.Rotate(new Vector3(1, 0, 0), rotationAroundXAxis);
-            cam.transform.Rotate(new Vector3(0, 1, 0), rotationAroundYAxis, Space.World); // <— This is what makes it work!
+            _cam.transform.Rotate(new Vector3(1, 0, 0), rotationAroundXAxis);
+            _cam.transform.Rotate(new Vector3(0, 1, 0), rotationAroundYAxis, Space.World); // <— This is what makes it work!
 
-            cam.transform.Translate(new Vector3(0, 0, -distanceToTarget));
+            _cam.transform.Translate(new Vector3(0, 0, -_distanceToTarget));
 
             previousPosition = newPosition;
         }

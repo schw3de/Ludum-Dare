@@ -27,9 +27,8 @@ namespace schw3de.ld
         private Timer _timer = new Timer(TimeSpan.FromSeconds(1));
         private (GameObject go, SpriteRenderer renderer) _spriteGo;
 
+        private CubeSideActions _cubeSideActions;
         private TextMeshProUGUI _textMeshPro;
-        private Action<CubeSide> _onMouseDown;
-        private Action<CubeSide> _onCountdownChange;
         private SpriteRenderer _spriteCountDown;
 
         private void Update()
@@ -49,15 +48,16 @@ namespace schw3de.ld
                     _timer.Start();
                 }
 
-                _onCountdownChange(this);
+                _cubeSideActions.OnCountdownChanged(this);
             }
         }
 
-        public void Init(int sideIndex, TMP_FontAsset tmp_FontAsset, Action<CubeSide> onMouseDown, Action<CubeSide> onCountdownChange)
+        public void Init(int sideIndex,
+                         TMP_FontAsset tmp_FontAsset,
+                         CubeSideActions cubeSideActions)
         {
             Index = sideIndex;
-            _onMouseDown = onMouseDown;
-            _onCountdownChange = onCountdownChange;
+            _cubeSideActions = cubeSideActions;
             var collider = gameObject.AddComponent<BoxCollider>();
 
             var boxSideInfo = sidePositions[sideIndex];
@@ -121,7 +121,16 @@ namespace schw3de.ld
         private void OnMouseDown()
         {
             Debug.Log($"OnMouseDown! {gameObject.name}");
-            _onMouseDown(this);
+            _cubeSideActions.OnLeftClick(this);
+        }
+
+        private void OnMouseOver()
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                Debug.Log("Right clicked!");
+                _cubeSideActions.OnRightClick(this);
+            }
         }
 
         private static Vector3 GetCubeSizeVector(Vector3 center)
