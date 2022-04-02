@@ -93,7 +93,14 @@ sysinfo.txt
 Icon?
 ehthumbs.db
 [Tt]humbs.db
+
+# ================== #
+# Ludum Dare Folders #
+# ================== #
 Review
 Builds
 .vs
 /Sounds
+
+# Draw Io
+*.dtmp
