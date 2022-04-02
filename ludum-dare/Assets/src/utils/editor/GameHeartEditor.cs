@@ -23,7 +23,7 @@ namespace schw3de.ld.utils
         {
             if (GUILayout.Button("Create Cubes"))
             {
-                _gameHeart.CreateCubes();
+                _gameHeart.CreateCube();
             }
 
             if (GUILayout.Button("Start Countdown"))

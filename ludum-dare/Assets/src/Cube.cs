@@ -29,17 +29,29 @@ namespace schw3de.ld
 
                 var cubeSide = cubeSideGo.AddComponent<CubeSide>();
 
-                cubeSide.Init(cubeSideIndex, tmp_FontAsset, onMouseDown, onCountdownChange);
+                cubeSide.Init(cubeSideIndex, tmp_FontAsset, OnMouseDown, OnCountdownChange);
 
                 CubeSides[cubeSideIndex] = cubeSide;
             }
         }
 
-        private void onCountdownChange(CubeSide cubeSide)
+        public void StartCountDowns(int countdownIndex)
+        {
+            foreach (var cubeSide in CubeSides)
+            {
+                cubeSide.SetCountdown(countdownIndex);
+            }
+        }
+
+        private void OnCountdownChange(CubeSide cubeSide)
         {
             var minCountDownIndex = CubeSides.Min(_ => _.CountDownIndex);
 
-            if (minCountDownIndex < 3)
+            if(minCountDownIndex <= 0)
+            {
+                DestroyImmediate(gameObject);
+            }
+            if (minCountDownIndex < 4)
             {
                 SetCubeState(CubeState.Red);
             }
@@ -53,22 +65,14 @@ namespace schw3de.ld
             }
         }
 
-        private void onMouseDown(CubeSide cubeSide)
+        private void OnMouseDown(CubeSide cubeSide)
         {
             cubeSide.SetCountdown(9);
-            onCountdownChange(cubeSide);
+            OnCountdownChange(cubeSide);
             //foreach(var cubeSide in CubeSides)
             //{
             //    cubeSide.SetCountdown(9);
             //}
-        }
-
-        public void StartCountDowns(int countdownIndex)
-        {
-            foreach (var cubeSide in CubeSides)
-            {
-                cubeSide.SetCountdown(countdownIndex);
-            }
         }
 
         private void SetCubeState(CubeState cubeState)
@@ -91,11 +95,13 @@ namespace schw3de.ld
 
         private static void SetMaterial(MeshRenderer meshRenderer, Material material)
         {
+            // this aint working as expected.
             if (meshRenderer.material == material)
             {
                 return;
             }
 
+            Debug.Log("Changed Material");
             meshRenderer.material = material;
         }
     }

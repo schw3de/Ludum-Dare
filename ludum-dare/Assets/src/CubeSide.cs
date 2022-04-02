@@ -28,7 +28,7 @@ namespace schw3de.ld
         public bool RunCountdown = false;
         public int CountDownIndex;
 
-        private Timer _timer = new Timer(TimeSpan.FromSeconds(1));
+        private Timer _timer = new Timer(TimeSpan.FromSeconds(3));
         private TextMeshProUGUI _textMeshPro;
         private Action<CubeSide> _onMouseDown;
         private Action<CubeSide> _onCountdownChange;
@@ -37,7 +37,6 @@ namespace schw3de.ld
         {
             if (RunCountdown && _timer.IsFinished())
             {
-                _onCountdownChange(this);
                 CountDownIndex--;
                 SetText(CountDownIndex);
 
@@ -50,6 +49,8 @@ namespace schw3de.ld
                 {
                     _timer.Start();
                 }
+
+                _onCountdownChange(this);
             }
         }
 
