@@ -10,21 +10,12 @@ namespace schw3de.ld
 {
     public static class CubeCreator
     {
-        public static void CreateCube(GameObject cube, TMP_FontAsset tmp_FontAsset)
+        public static Cube CreateCube(GameObject cubeGo, TMP_FontAsset tmp_FontAsset)
         {
-            var cubeSides = new CubeSide[6];
+            var cube = cubeGo.AddComponent<Cube>();
+            cube.Init(tmp_FontAsset);
 
-            for (int cubeSideIndex = 0; cubeSideIndex < cubeSides.Length; cubeSideIndex++)
-            {
-                var cubeSideGo = new GameObject($"CubeSideIndex-{cubeSideIndex}");
-                cubeSideGo.transform.SetParent(cube.transform, false);
-
-                var cubeSide = cubeSideGo.AddComponent<CubeSide>();
-
-                cubeSide.Init(cubeSideIndex, tmp_FontAsset);
-
-                cubeSides[cubeSideIndex] = cubeSide;
-            }
+            return cube;
         }
     }
 }
