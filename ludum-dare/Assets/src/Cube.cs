@@ -96,7 +96,7 @@ namespace schw3de.ld
         private static void SetMaterial(MeshRenderer meshRenderer, Material material)
         {
             // this aint working as expected.
-            if (meshRenderer.material == material)
+            if (meshRenderer.material.name.Contains(material.name))
             {
                 return;
             }

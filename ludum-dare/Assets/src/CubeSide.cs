@@ -29,6 +29,8 @@ namespace schw3de.ld
         public int CountDownIndex;
 
         private Timer _timer = new Timer(TimeSpan.FromSeconds(3));
+        private (GameObject go, SpriteRenderer renderer) _spriteGo;
+
         private TextMeshProUGUI _textMeshPro;
         private Action<CubeSide> _onMouseDown;
         private Action<CubeSide> _onCountdownChange;
@@ -69,8 +71,7 @@ namespace schw3de.ld
             var canvas = gameObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.WorldSpace;
 
-            var textGameObject = new GameObject($"Text");
-            textGameObject.transform.SetParent(gameObject.transform, false);
+            var textGameObject = CreateChildGameObject(gameObject, "Text", boxSideInfo);
 
             _textMeshPro = textGameObject.AddComponent<TextMeshProUGUI>();
             _textMeshPro.font = tmp_FontAsset;
@@ -79,8 +80,19 @@ namespace schw3de.ld
             _textMeshPro.text = sideIndex.ToString();
             var rectTransform = (_textMeshPro.transform as RectTransform);
             rectTransform.sizeDelta = new Vector2(1, 1);
-            rectTransform.localPosition = center * distanceFromCube;
-            rectTransform.localRotation = Quaternion.Euler(boxSideInfo.rotation);
+
+            //var spriteGo = CreateChildGameObject(gameObject, "Sprite", boxSideInfo);
+            //var spriteRenderer = spriteGo.AddComponent<SpriteRenderer>();
+            //spriteRenderer.sprite = GameAssets.Instance.Bomb;
+        }
+
+        private GameObject CreateChildGameObject(GameObject parent, string name, (Vector3 center, Vector3 rotation) boxSideInfo)
+        {
+            var newGameObject = new GameObject(name);
+            newGameObject.transform.SetParent(parent.transform, false);
+            newGameObject.transform.localPosition = boxSideInfo.center * distanceFromCube;
+            newGameObject.transform.localRotation = Quaternion.Euler(boxSideInfo.rotation);
+            return newGameObject;
         }
 
         public void SetCountdown(int countdownIndex)

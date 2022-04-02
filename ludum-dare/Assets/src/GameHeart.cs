@@ -11,7 +11,6 @@ namespace schw3de.ld
     public class GameHeart : Singleton<GameHeart>
     {
         public GameObject PrefabCube;
-        public TMP_FontAsset CubeFont;
 
         private GameObject _cubeParent;
         private List<Cube> _cubes = new List<Cube>();
@@ -40,7 +39,7 @@ namespace schw3de.ld
             cubeGo.transform.localPosition = positions[_cubes.Count];
             cubeGo.SetActive(true);
 
-            _cubes.Add(CubeCreator.CreateCube(cubeGo, CubeFont));
+            _cubes.Add(CubeCreator.CreateCube(cubeGo, GameAssets.Instance.CubeFont));
         }
 
         public void StartCountDown()
