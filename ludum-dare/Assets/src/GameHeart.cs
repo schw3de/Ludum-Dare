@@ -30,6 +30,9 @@ namespace schw3de.ld
             _cubeParent = new GameObject("CubeParent");
 
             CreateCube();
+            CreateCube();
+            CreateCube();
+            CreateCube();
             StartCountDown();
         }
 
@@ -46,7 +49,7 @@ namespace schw3de.ld
         {
             foreach(var cube in _cubes)
             {
-                cube.StartCountDowns(9);
+                cube.StartCountDowns(8);
             }
         }
     }

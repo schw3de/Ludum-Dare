@@ -1,9 +1,5 @@
 ﻿using schw3de.ld.utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -28,12 +24,13 @@ namespace schw3de.ld
         public bool RunCountdown = false;
         public int CountDownIndex;
 
-        private Timer _timer = new Timer(TimeSpan.FromSeconds(3));
+        private Timer _timer = new Timer(TimeSpan.FromSeconds(1));
         private (GameObject go, SpriteRenderer renderer) _spriteGo;
 
         private TextMeshProUGUI _textMeshPro;
         private Action<CubeSide> _onMouseDown;
         private Action<CubeSide> _onCountdownChange;
+        private SpriteRenderer _spriteCountDown;
 
         private void Update()
         {
@@ -71,15 +68,20 @@ namespace schw3de.ld
             var canvas = gameObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.WorldSpace;
 
-            var textGameObject = CreateChildGameObject(gameObject, "Text", boxSideInfo);
+            // Text Game Object
+            //var textGameObject = CreateChildGameObject(gameObject, "Text", boxSideInfo);
+            //_textMeshPro = textGameObject.AddComponent<TextMeshProUGUI>();
+            //_textMeshPro.font = tmp_FontAsset;
+            //_textMeshPro.enableAutoSizing = true;
+            //_textMeshPro.fontSizeMin = 0;
+            //_textMeshPro.text = sideIndex.ToString();
+            //var rectTransform = (_textMeshPro.transform as RectTransform);
+            //rectTransform.sizeDelta = new Vector2(1, 1);
 
-            _textMeshPro = textGameObject.AddComponent<TextMeshProUGUI>();
-            _textMeshPro.font = tmp_FontAsset;
-            _textMeshPro.enableAutoSizing = true;
-            _textMeshPro.fontSizeMin = 0;
-            _textMeshPro.text = sideIndex.ToString();
-            var rectTransform = (_textMeshPro.transform as RectTransform);
-            rectTransform.sizeDelta = new Vector2(1, 1);
+            var spriteCountdown = CreateChildGameObject(gameObject, "Sprite Countdown", boxSideInfo);
+            _spriteCountDown = spriteCountdown.AddComponent<SpriteRenderer>();
+            //spriteRenderer.sprite = GameAssets.Instance.Bomb;
+
 
             //var spriteGo = CreateChildGameObject(gameObject, "Sprite", boxSideInfo);
             //var spriteRenderer = spriteGo.AddComponent<SpriteRenderer>();
@@ -105,7 +107,15 @@ namespace schw3de.ld
 
         private void SetText(int countdown)
         {
-            _textMeshPro.text = countdown.ToString();
+            //_textMeshPro.text = countdown.ToString();
+            if (countdown == 0)
+            {
+                _spriteCountDown.sprite = null;
+            }
+            else
+            {
+                _spriteCountDown.sprite = GameAssets.Instance.CubeCountdown[countdown - 1];
+            }
         }
 
         private void OnMouseDown()

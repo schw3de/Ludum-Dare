@@ -20,6 +20,7 @@ namespace schw3de.ld
 
         private void Awake()
         {
+            previousPosition = cam.ScreenToViewportPoint(Input.mousePosition);
             HandleMovement();
         }
 

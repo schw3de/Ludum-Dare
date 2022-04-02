@@ -17,5 +17,7 @@ namespace schw3de.ld
         public Material CubeRed;
 
         public Sprite Bomb;
+
+        public Sprite[] CubeCountdown;
     }
 }

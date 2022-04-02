@@ -66,7 +66,7 @@ namespace schw3de.ld
 
         private void OnMouseDown(CubeSide cubeSide)
         {
-            cubeSide.SetCountdown(9);
+            cubeSide.SetCountdown(8);
             OnCountdownChange(cubeSide);
             //foreach(var cubeSide in CubeSides)
             //{
