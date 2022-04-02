@@ -1,9 +1,5 @@
-﻿using schw3de.ld.utils;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -29,7 +25,10 @@ namespace schw3de.ld
 
                 var cubeSide = cubeSideGo.AddComponent<CubeSide>();
 
-                cubeSide.Init(cubeSideIndex, tmp_FontAsset, OnMouseDown, OnCountdownChange);
+                cubeSide.Init(cubeSideIndex,
+                              tmp_FontAsset,
+                              OnMouseDown,
+                              OnCountdownChange);
 
                 CubeSides[cubeSideIndex] = cubeSide;
             }
@@ -47,15 +46,15 @@ namespace schw3de.ld
         {
             var minCountDownIndex = CubeSides.Min(_ => _.CountDownIndex);
 
-            if(minCountDownIndex <= 0)
+            if (minCountDownIndex <= 0)
             {
                 DestroyImmediate(gameObject);
             }
-            if (minCountDownIndex < 4)
+            else if (minCountDownIndex < 4)
             {
                 SetCubeState(CubeState.Red);
             }
-            else if(minCountDownIndex < 6)
+            else if (minCountDownIndex < 6)
             {
                 SetCubeState(CubeState.Yellow);
             }
@@ -93,9 +92,16 @@ namespace schw3de.ld
             }
         }
 
+        private void PreCheck(CubeSide cubeSide, Action<CubeSide> action)
+        {
+            if (gameObject != null)
+            {
+                action(cubeSide);
+            }
+        }
+
         private static void SetMaterial(MeshRenderer meshRenderer, Material material)
         {
-            // this aint working as expected.
             if (meshRenderer.material.name.Contains(material.name))
             {
                 return;
