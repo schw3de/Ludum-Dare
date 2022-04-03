@@ -26,5 +26,7 @@ namespace schw3de.ld
         public Sprite MenuTutorial1Sprite;
         public Sprite MenuTutorial2Sprite;
         public Sprite MenuTutorial3Sprite;
+
+        public GameObject ExplosionPrefab;
     }
 }

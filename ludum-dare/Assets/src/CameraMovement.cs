@@ -1,4 +1,5 @@
-﻿using System;
+﻿using schw3de.ld.utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,10 +15,11 @@ namespace schw3de.ld
     {
         [SerializeField] private Camera _cam;
         [SerializeField] private Vector3 _target;
-        private float _distanceToTarget = 10;
+        private float _distanceToTarget = 50;
 
         private Vector3 _previousPosition;
         private Vector3 _originalPosition;
+        private Timer _blockTimer = new Timer();
 
         private new void Awake()
         {
@@ -31,6 +33,11 @@ namespace schw3de.ld
 
         void Update()
         {
+            if(!_blockTimer.IsFinished())
+            {
+                return;
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
                 _previousPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
@@ -44,6 +51,7 @@ namespace schw3de.ld
         public void SetTarget(Transform target)
         {
             _target = target.position;
+            _previousPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
             HandleMovement();
         }
 
@@ -70,5 +78,7 @@ namespace schw3de.ld
 
             _previousPosition = newPosition;
         }
+
+        public void Block(TimeSpan blockTime) => _blockTimer.Start(blockTime);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using schw3de.ld.Ui;
 using schw3de.ld.utils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,12 +21,19 @@ namespace schw3de.ld
         {
             new Vector3(0, 0, 0),
             new Vector3(5, 0, 0),
+            new Vector3(-5, 0, 0),
             new Vector3(0, 5, 0),
+            new Vector3(0, -5, 0),
             new Vector3(0, 0, 5),
+            new Vector3(0, 0, -5),
             new Vector3(5, 5, 0),
+            new Vector3(-5, -5, 0),
             new Vector3(0, 5, 5),
+            new Vector3(0, -5, -5),
             new Vector3(5, 0, 5),
+            new Vector3(-5, 0, -5),
             new Vector3(5, 5, 5),
+            new Vector3(-5, -5, -5),
         };
 
         private DateTime _startTime;
@@ -38,8 +46,8 @@ namespace schw3de.ld
             TimeSpan.FromSeconds(3),
             TimeSpan.FromSeconds(5),
             TimeSpan.FromSeconds(8),
-            TimeSpan.FromSeconds(9),
-            TimeSpan.FromSeconds(10)
+            TimeSpan.FromSeconds(12),
+            TimeSpan.FromSeconds(15)
         };
 
         private new void Awake()
@@ -52,6 +60,12 @@ namespace schw3de.ld
         {
             _mainUi = MainUi.Instance;
             CreateMenuCube(false);
+
+            // Debug purpose
+            //for (int index = 0; index < positions.Length; index++)
+            //{
+            //    CreateCube();
+            //}
         }
 
         private void Update()
@@ -89,7 +103,7 @@ namespace schw3de.ld
                                            CubeSideState.Countdown,
                                            CubeSideState.Countdown,
                                            CubeSideState.Countdown,
-                                           CubeSideState.Countdown,
+                                           CubeSideState.Reload,
                                            CubeSideState.Bomb,
                                            CubeSideState.Reload,
                                        };
@@ -107,9 +121,9 @@ namespace schw3de.ld
             _cubes.Add(cube);
         }
 
-        private void OnBombClicked(Cube obj)
+        private void OnBombClicked(Cube cube)
         {
-            GameOver();
+            GameOver(cube);
         }
 
         public void CreateMenuCube(bool gameOver)
@@ -143,9 +157,7 @@ namespace schw3de.ld
 
             if (minCountDownIndex <= 0)
             {
-                //cube.Destroy();
-                //_cubes.Remove(cube);
-                GameOver();
+                GameOver(cubeOnCountdownChanged);
             }
             else if (minCountDownIndex < 4)
             {
@@ -161,19 +173,34 @@ namespace schw3de.ld
             }
         }
 
-        private void GameOver()
+        private void GameOver(Cube cubeDestroyed)
         {
+            var survied = DateTime.UtcNow - _startTime;
+            var survivedTotalSeconds = (int)survied.TotalSeconds;
+            cubeDestroyed.Explode();
+
+            CameraMovement.Instance.Block(TimeSpan.FromSeconds(3));
+            foreach (var cube in _cubes)
+            {
+                cube.Stop();
+            }
+
             _mainUi.gameObject.SetActive(false);
             _mainUi.SetSurvived(string.Empty);
             _isGameRunning = false;
-            var survied = DateTime.UtcNow - _startTime;
-            var survivedTotalSeconds = (int)survied.TotalSeconds;
-            GameState.SetLastSurvivedTotalSeconds(survivedTotalSeconds);
 
+            GameState.SetLastSurvivedTotalSeconds(survivedTotalSeconds);
             if (GameState.GetSurvivedTotalSeconds() < survivedTotalSeconds)
             {
                 GameState.SetSurvivedTotalSeconds(survivedTotalSeconds);
             }
+
+            StartCoroutine(ContinueWithGame());
+        }
+
+        private IEnumerator ContinueWithGame()
+        {
+            yield return new WaitForSeconds(3);
 
             foreach (var cube in _cubes)
             {
@@ -185,6 +212,7 @@ namespace schw3de.ld
             isMenu = true;
         }
 
+
         public void StartCountDown()
         {
             foreach (var cube in _cubes)
@@ -195,7 +223,7 @@ namespace schw3de.ld
 
         private void SetCubeSpawnTimer()
         {
-            if(_cubeTimeSpawns.Length <= _cubeSpawnIndex)
+            if (_cubeTimeSpawns.Length <= _cubeSpawnIndex)
             {
                 _cubeSpawnTimer.Start(_cubeTimeSpawns.Last());
 

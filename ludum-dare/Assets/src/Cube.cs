@@ -68,6 +68,19 @@ namespace schw3de.ld
             DestroyImmediate(gameObject);
         }
 
+        public void Explode()
+        {
+            Instantiate(GameAssets.Instance.ExplosionPrefab, transform);
+        }
+
+        public void Stop()
+        {
+            foreach (var cubeSide in CubeSides)
+            {
+                cubeSide.Stop();
+            }
+        }
+
         private void OnRightClick(CubeSide _)
         {
             CameraMovement.Instance.SetTarget(transform);

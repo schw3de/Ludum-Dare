@@ -35,17 +35,21 @@ namespace schw3de.ld
         public int CountDownIndex;
         public CubeSideState CubeSideState;
 
-        private Timer _timer = new Timer(TimeSpan.FromSeconds(1));
+        private Timer _timer = new Timer(TimeSpan.FromSeconds(2));
         private (GameObject go, SpriteRenderer renderer) _spriteGo;
 
         private CubeSideActions _cubeSideActions;
         private TextMeshProUGUI _textMeshPro;
         private SpriteRenderer _sprite;
-        //private SpriteRenderer _spriteBomb;
-        //private SpriteRenderer _spriteReload;
+        private bool _isStop;
 
         private void Update()
         {
+            if (_isStop)
+            {
+                return;
+            }
+
             if (RunCountdown && _timer.IsFinished())
             {
                 SetCountdownIndex(CountDownIndex - 1);
@@ -86,7 +90,7 @@ namespace schw3de.ld
             _sprite = spriteGo.AddComponent<SpriteRenderer>();
 
             // Text Game Object
-            if(cubeSideState == CubeSideState.GameOver)
+            if (cubeSideState == CubeSideState.GameOver)
             {
                 var textGameObject = CreateChildGameObject(gameObject, "Text", boxSideInfo);
                 _textMeshPro = textGameObject.AddComponent<TextMeshProUGUI>();
@@ -102,6 +106,11 @@ namespace schw3de.ld
             }
 
             SetCubeSideState(cubeSideState);
+        }
+
+        public void Stop()
+        {
+            _isStop = true;
         }
 
         private GameObject CreateChildGameObject(GameObject parent, string name, (Vector3 center, Vector3 rotation) boxSideInfo)
@@ -159,7 +168,7 @@ namespace schw3de.ld
                 case CubeSideState.GameOver:
                     var survived = TimeSpan.FromSeconds(GameState.GetLastSurvivedTotalSeconds());
                     var highScore = TimeSpan.FromSeconds(GameState.GetSurvivedTotalSeconds());
-                    var newHighScore = 
+                    var newHighScore =
                     _textMeshPro.text = $"Game Over!\n\nYou survived:\n{GetSurvivedFormat(survived)}\n\n{ShowHighScore(survived, highScore)}";
                     break;
             }
@@ -190,7 +199,12 @@ namespace schw3de.ld
 
         private void OnMouseDown()
         {
-            if(MenuStates.Contains(CubeSideState))
+            if (_isStop)
+            {
+                return;
+            }
+
+            if (MenuStates.Contains(CubeSideState))
             {
                 return;
             }
@@ -201,6 +215,11 @@ namespace schw3de.ld
 
         private void OnMouseOver()
         {
+            if (_isStop)
+            {
+                return;
+            }
+
             if (MenuStates.Contains(CubeSideState))
             {
                 return;

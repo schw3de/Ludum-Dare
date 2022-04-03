@@ -765,6 +765,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 0bdb9ece2f107a0479fc643f44c8b917, type: 3}
     - target: {fileID: 5118530058211349196, guid: dcb38697fc6847544bd531d8f360a48d, type: 3}
+      propertyPath: ExplosionPrefab
+      value: 
+      objectReference: {fileID: 1470664604175915787, guid: 20594a2bd6c446f4d84de28f5551af63, type: 3}
+    - target: {fileID: 5118530058211349196, guid: dcb38697fc6847544bd531d8f360a48d, type: 3}
       propertyPath: MenuTutorial1Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 177ce7bd8e8ea1147bfe99f1fba62b38, type: 3}
