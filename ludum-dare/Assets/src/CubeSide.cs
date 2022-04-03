@@ -1,5 +1,6 @@
 ﻿using schw3de.ld.utils;
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -23,13 +24,16 @@ namespace schw3de.ld
         public int Index;
         public bool RunCountdown = false;
         public int CountDownIndex;
+        public CubeSideState CubeSideState;
 
         private Timer _timer = new Timer(TimeSpan.FromSeconds(1));
         private (GameObject go, SpriteRenderer renderer) _spriteGo;
 
         private CubeSideActions _cubeSideActions;
         private TextMeshProUGUI _textMeshPro;
-        private SpriteRenderer _spriteCountDown;
+        private SpriteRenderer _sprite;
+        //private SpriteRenderer _spriteBomb;
+        //private SpriteRenderer _spriteReload;
 
         private void Update()
         {
@@ -53,10 +57,11 @@ namespace schw3de.ld
         }
 
         public void Init(int sideIndex,
-                         TMP_FontAsset tmp_FontAsset,
+                         CubeSideState cubeSideState,
                          CubeSideActions cubeSideActions)
         {
             Index = sideIndex;
+
             _cubeSideActions = cubeSideActions;
             var collider = gameObject.AddComponent<BoxCollider>();
 
@@ -68,6 +73,29 @@ namespace schw3de.ld
             var canvas = gameObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.WorldSpace;
 
+            var spriteGo = CreateChildGameObject(gameObject, "Sprite", boxSideInfo);
+            _sprite = spriteGo.AddComponent<SpriteRenderer>();
+
+            SetCubeSideState(cubeSideState);
+
+            //switch (cubeSideState)
+            //{
+            //    case CubeSideState.Countdown:
+            //        var spriteCountdown = CreateChildGameObject(gameObject, "Sprite", boxSideInfo);
+            //        _spriteCountDown = spriteCountdown.AddComponent<SpriteRenderer>();
+            //        break;
+            //    case CubeSideState.Bomb:
+            //        var spriteBomb = CreateChildGameObject(gameObject, "Sprite Bomb", boxSideInfo);
+            //        _spriteBomb = spriteBomb.AddComponent<SpriteRenderer>();
+            //        _spriteBomb.sprite = GameAssets.Instance.BombSprite;
+            //        break;
+            //    case CubeSideState.Reload:
+            //        var spriteReload = CreateChildGameObject(gameObject, "Sprite Reload", boxSideInfo);
+            //        _spriteReload = spriteReload.AddComponent<SpriteRenderer>();
+            //        _spriteReload.sprite = GameAssets.Instance.ReloadSprite;
+            //        break;
+            //}
+
             // Text Game Object
             //var textGameObject = CreateChildGameObject(gameObject, "Text", boxSideInfo);
             //_textMeshPro = textGameObject.AddComponent<TextMeshProUGUI>();
@@ -78,8 +106,8 @@ namespace schw3de.ld
             //var rectTransform = (_textMeshPro.transform as RectTransform);
             //rectTransform.sizeDelta = new Vector2(1, 1);
 
-            var spriteCountdown = CreateChildGameObject(gameObject, "Sprite Countdown", boxSideInfo);
-            _spriteCountDown = spriteCountdown.AddComponent<SpriteRenderer>();
+            //var spriteCountdown = CreateChildGameObject(gameObject, "Sprite Countdown", boxSideInfo);
+            //_spriteCountDown = spriteCountdown.AddComponent<SpriteRenderer>();
             //spriteRenderer.sprite = GameAssets.Instance.Bomb;
 
 
@@ -99,22 +127,50 @@ namespace schw3de.ld
 
         public void SetCountdown(int countdownIndex)
         {
+            if (CubeSideState != CubeSideState.Countdown)
+            {
+                return;
+            }
+
             CountDownIndex = countdownIndex;
             SetText(CountDownIndex);
             _timer.Start();
             RunCountdown = true;
         }
 
+        public void SetCubeSideState(CubeSideState cubeSideState)
+        {
+            CubeSideState = cubeSideState;
+
+            switch (cubeSideState)
+            {
+                case CubeSideState.Countdown:
+                    _sprite.sprite = GameAssets.Instance.CubeCountdownSprite.Last();
+                    break;
+                case CubeSideState.Bomb:
+                    _sprite.sprite = GameAssets.Instance.BombSprite;
+                    break;
+                case CubeSideState.Reload:
+                    _sprite.sprite = GameAssets.Instance.ReloadSprite;
+                    break;
+            }
+        }
+
         private void SetText(int countdown)
         {
+            if (CubeSideState != CubeSideState.Countdown)
+            {
+                return;
+            }
+
             //_textMeshPro.text = countdown.ToString();
             if (countdown == 0)
             {
-                _spriteCountDown.sprite = null;
+                _sprite.sprite = null;
             }
             else
             {
-                _spriteCountDown.sprite = GameAssets.Instance.CubeCountdown[countdown - 1];
+                _sprite.sprite = GameAssets.Instance.CubeCountdownSprite[countdown - 1];
             }
         }
 

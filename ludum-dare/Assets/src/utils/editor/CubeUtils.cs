@@ -32,7 +32,7 @@ namespace schw3de.ld.utils
 
             DeleteChildren(cube);
 
-            CubeCreator.CreateCube(cube.gameObject, GameAssets.Instance.CubeFont);
+            //Cube.CreateCube(cube.gameObject, GameAssets.Instance.CubeFont);
 
             //for (int sideIndex = 1; sideIndex <= sidePositions.Length; sideIndex++)
             //{

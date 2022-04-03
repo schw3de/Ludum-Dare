@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMPro;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace schw3de.ld
@@ -38,16 +33,29 @@ namespace schw3de.ld
 
         public void CreateCube()
         {
-            var cubeGo = Instantiate(PrefabCube, _cubeParent.transform);
-            cubeGo.transform.localPosition = positions[_cubes.Count];
-            cubeGo.SetActive(true);
+            _cubes.Add(Cube.Create(new CubeActions(OnCubeDestroyed),
+                                   new CubeSideCreation(
+                                       new CubeSideState[]
+                                       {
+                                           CubeSideState.Countdown,
+                                           CubeSideState.Countdown,
+                                           CubeSideState.Countdown,
+                                           CubeSideState.Countdown,
+                                           CubeSideState.Bomb,
+                                           CubeSideState.Reload,
+                                       }),
+                                   _cubeParent.transform,
+                                   positions[_cubes.Count]));
+        }
 
-            _cubes.Add(CubeCreator.CreateCube(cubeGo, GameAssets.Instance.CubeFont));
+        private void OnCubeDestroyed(Cube cube)
+        {
+
         }
 
         public void StartCountDown()
         {
-            foreach(var cube in _cubes)
+            foreach (var cube in _cubes)
             {
                 cube.StartCountDowns(8);
             }

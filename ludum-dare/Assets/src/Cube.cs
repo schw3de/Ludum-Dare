@@ -10,14 +10,17 @@ namespace schw3de.ld
         public CubeSide[] CubeSides = new CubeSide[6];
 
         private MeshRenderer _meshRenderer;
+        private CubeActions _cubeActions;
 
         private void Awake()
         {
             _meshRenderer = GetComponent<MeshRenderer>();
         }
 
-        public void Init(TMP_FontAsset tmp_FontAsset)
+        public void Init(CubeActions cubeActions, CubeSideCreation cubeSideCreation)
         {
+            _cubeActions = cubeActions;
+
             for (int cubeSideIndex = 0; cubeSideIndex < CubeSides.Length; cubeSideIndex++)
             {
                 var cubeSideGo = new GameObject($"CubeSideIndex-{cubeSideIndex}");
@@ -26,13 +29,28 @@ namespace schw3de.ld
                 var cubeSide = cubeSideGo.AddComponent<CubeSide>();
 
                 cubeSide.Init(cubeSideIndex,
-                              tmp_FontAsset,
+                              cubeSideCreation.CubeSideStates[cubeSideIndex],
                               new CubeSideActions(OnLeftClick,
                                                   OnRightClick,
                                                   OnCountdownChange));
 
                 CubeSides[cubeSideIndex] = cubeSide;
             }
+        }
+
+        public static Cube Create(CubeActions cubeActions,
+                                  CubeSideCreation cubeSideCreation,
+                                  Transform parent,
+                                  Vector3 position)
+        {
+            var cubeGo = Instantiate(GameAssets.Instance.CubePrefab, parent.transform);
+            cubeGo.transform.localPosition = position;
+            cubeGo.SetActive(true);
+
+            var cube = cubeGo.AddComponent<Cube>();
+            cube.Init(cubeActions, cubeSideCreation);
+
+            return cube;
         }
 
         private void OnRightClick(CubeSide obj)
@@ -50,11 +68,12 @@ namespace schw3de.ld
 
         private void OnCountdownChange(CubeSide cubeSide)
         {
-            var minCountDownIndex = CubeSides.Min(_ => _.CountDownIndex);
+            var minCountDownIndex = CubeSides.Where(_ => _.CubeSideState == CubeSideState.Countdown).Min(_ => _.CountDownIndex);
 
             if (minCountDownIndex <= 0)
             {
                 DestroyImmediate(gameObject);
+                _cubeActions.CubeDestroyed(this);
             }
             else if (minCountDownIndex < 4)
             {
@@ -70,15 +89,22 @@ namespace schw3de.ld
             }
         }
 
-        private void OnLeftClick(CubeSide cubeSide)
+        private void OnLeftClick(CubeSide cubeSideClicked)
         {
-            cubeSide.SetCountdown(8);
-            OnCountdownChange(cubeSide);
+            if(cubeSideClicked.CubeSideState != CubeSideState.Reload)
+            {
+                return;
+            }
 
-            //foreach(var cubeSide in CubeSides)
-            //{
-            //    cubeSide.SetCountdown(9);
-            //}
+            //cubeSide.SetCountdown(8);
+            //OnCountdownChange(cubeSideClicked);
+
+            foreach (var cubeSide in CubeSides)
+            {
+                cubeSide.SetCountdown(8);
+                OnCountdownChange(cubeSide);
+
+            }
         }
 
         private void SetCubeState(CubeState cubeState)
@@ -86,15 +112,15 @@ namespace schw3de.ld
             switch (cubeState)
             {
                 case CubeState.Default:
-                    SetMaterial(_meshRenderer, GameAssets.Instance.CubeDefault);
+                    SetMaterial(_meshRenderer, GameAssets.Instance.CubeDefaultMaterial);
                     break;
 
                 case CubeState.Yellow:
-                    SetMaterial(_meshRenderer, GameAssets.Instance.CubeYellow);
+                    SetMaterial(_meshRenderer, GameAssets.Instance.CubeYellowMaterial);
                     break;
 
                 case CubeState.Red:
-                    SetMaterial(_meshRenderer, GameAssets.Instance.CubeRed);
+                    SetMaterial(_meshRenderer, GameAssets.Instance.CubeRedMaterial);
                     break;
             }
         }
