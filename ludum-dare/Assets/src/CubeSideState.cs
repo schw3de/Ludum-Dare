@@ -10,6 +10,12 @@ namespace schw3de.ld
     {
         Countdown,
         Bomb,
-        Reload
+        Reload,
+        Empty,
+        Start,
+        Tutorial1,
+        Tutorial2,
+        Tutorial3,
+        GameOver
     }
 }

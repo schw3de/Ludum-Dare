@@ -11,6 +11,15 @@ namespace schw3de.ld
         private static readonly int sizeOfCube = 2;
         private static readonly float distanceFromCube = 1.01f;
 
+        private static readonly CubeSideState[] MenuStates =
+        {
+            CubeSideState.Empty,
+            CubeSideState.Start,
+            CubeSideState.Tutorial1,
+            CubeSideState.Tutorial2,
+            CubeSideState.Tutorial3
+        };
+
         private static readonly (Vector3 center, Vector3 rotation)[] sidePositions = new[]
         {
             (new Vector3(1, 0, 0), new Vector3(0, 270, 0)),
@@ -26,7 +35,7 @@ namespace schw3de.ld
         public int CountDownIndex;
         public CubeSideState CubeSideState;
 
-        private Timer _timer = new Timer(TimeSpan.FromSeconds(3));
+        private Timer _timer = new Timer(TimeSpan.FromSeconds(1));
         private (GameObject go, SpriteRenderer renderer) _spriteGo;
 
         private CubeSideActions _cubeSideActions;
@@ -76,44 +85,23 @@ namespace schw3de.ld
             var spriteGo = CreateChildGameObject(gameObject, "Sprite", boxSideInfo);
             _sprite = spriteGo.AddComponent<SpriteRenderer>();
 
-            SetCubeSideState(cubeSideState);
-
-            //switch (cubeSideState)
-            //{
-            //    case CubeSideState.Countdown:
-            //        var spriteCountdown = CreateChildGameObject(gameObject, "Sprite", boxSideInfo);
-            //        _spriteCountDown = spriteCountdown.AddComponent<SpriteRenderer>();
-            //        break;
-            //    case CubeSideState.Bomb:
-            //        var spriteBomb = CreateChildGameObject(gameObject, "Sprite Bomb", boxSideInfo);
-            //        _spriteBomb = spriteBomb.AddComponent<SpriteRenderer>();
-            //        _spriteBomb.sprite = GameAssets.Instance.BombSprite;
-            //        break;
-            //    case CubeSideState.Reload:
-            //        var spriteReload = CreateChildGameObject(gameObject, "Sprite Reload", boxSideInfo);
-            //        _spriteReload = spriteReload.AddComponent<SpriteRenderer>();
-            //        _spriteReload.sprite = GameAssets.Instance.ReloadSprite;
-            //        break;
-            //}
-
             // Text Game Object
-            //var textGameObject = CreateChildGameObject(gameObject, "Text", boxSideInfo);
-            //_textMeshPro = textGameObject.AddComponent<TextMeshProUGUI>();
-            //_textMeshPro.font = tmp_FontAsset;
-            //_textMeshPro.enableAutoSizing = true;
-            //_textMeshPro.fontSizeMin = 0;
-            //_textMeshPro.text = sideIndex.ToString();
-            //var rectTransform = (_textMeshPro.transform as RectTransform);
-            //rectTransform.sizeDelta = new Vector2(1, 1);
+            if(cubeSideState == CubeSideState.GameOver)
+            {
+                var textGameObject = CreateChildGameObject(gameObject, "Text", boxSideInfo);
+                _textMeshPro = textGameObject.AddComponent<TextMeshProUGUI>();
+                _textMeshPro.font = GameAssets.Instance.CubeFont;
+                _textMeshPro.enableAutoSizing = true;
+                _textMeshPro.fontSizeMin = 0;
+                _textMeshPro.text = sideIndex.ToString();
 
-            //var spriteCountdown = CreateChildGameObject(gameObject, "Sprite Countdown", boxSideInfo);
-            //_spriteCountDown = spriteCountdown.AddComponent<SpriteRenderer>();
-            //spriteRenderer.sprite = GameAssets.Instance.Bomb;
+                var rectTransform = (_textMeshPro.transform as RectTransform);
+                rectTransform.sizeDelta = new Vector2(1, 1.5f);
+                _textMeshPro.outlineWidth = 0.2f;
+                _textMeshPro.outlineColor = new Color32(0, 0, 0, 255);
+            }
 
-
-            //var spriteGo = CreateChildGameObject(gameObject, "Sprite", boxSideInfo);
-            //var spriteRenderer = spriteGo.AddComponent<SpriteRenderer>();
-            //spriteRenderer.sprite = GameAssets.Instance.Bomb;
+            SetCubeSideState(cubeSideState);
         }
 
         private GameObject CreateChildGameObject(GameObject parent, string name, (Vector3 center, Vector3 rotation) boxSideInfo)
@@ -153,6 +141,27 @@ namespace schw3de.ld
                 case CubeSideState.Reload:
                     _sprite.sprite = GameAssets.Instance.ReloadSprite;
                     break;
+                case CubeSideState.Empty:
+                    _sprite.sprite = null;
+                    break;
+                case CubeSideState.Start:
+                    _sprite.sprite = GameAssets.Instance.MenuStart;
+                    break;
+                case CubeSideState.Tutorial1:
+                    _sprite.sprite = GameAssets.Instance.MenuTutorial1Sprite;
+                    break;
+                case CubeSideState.Tutorial2:
+                    _sprite.sprite = GameAssets.Instance.MenuTutorial2Sprite;
+                    break;
+                case CubeSideState.Tutorial3:
+                    _sprite.sprite = GameAssets.Instance.MenuTutorial3Sprite;
+                    break;
+                case CubeSideState.GameOver:
+                    var survived = TimeSpan.FromSeconds(GameState.GetLastSurvivedTotalSeconds());
+                    var highScore = TimeSpan.FromSeconds(GameState.GetSurvivedTotalSeconds());
+                    var newHighScore = 
+                    _textMeshPro.text = $"Game Over!\n\nYou survived:\n{GetSurvivedFormat(survived)}\n\n{ShowHighScore(survived, highScore)}";
+                    break;
             }
         }
 
@@ -181,12 +190,22 @@ namespace schw3de.ld
 
         private void OnMouseDown()
         {
+            if(MenuStates.Contains(CubeSideState))
+            {
+                return;
+            }
+
             Debug.Log($"OnMouseDown! {gameObject.name} State:{CubeSideState}");
             _cubeSideActions.OnLeftClick(this);
         }
 
         private void OnMouseOver()
         {
+            if (MenuStates.Contains(CubeSideState))
+            {
+                return;
+            }
+
             if (Input.GetMouseButtonDown(1))
             {
                 Debug.Log("Right clicked!");
@@ -201,5 +220,11 @@ namespace schw3de.ld
 
         private static int GetCubeSizeParameter(float parameter)
             => parameter == 0 ? sizeOfCube : 0;
+
+        private static string GetSurvivedFormat(TimeSpan survived)
+            => $"{survived.Minutes} min {survived.TotalSeconds} sec{(survived.TotalSeconds > 1 ? "s" : string.Empty)}";
+
+        public static string ShowHighScore(TimeSpan survived, TimeSpan highscore)
+            => survived == highscore ? "New Highscore!" : $"Highscore:\n{GetSurvivedFormat(highscore)}";
     }
 }

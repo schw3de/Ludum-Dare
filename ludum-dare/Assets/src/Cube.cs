@@ -91,6 +91,11 @@ namespace schw3de.ld
 
         private void OnLeftClick(CubeSide cubeSideClicked)
         {
+            if(cubeSideClicked.CubeSideState == CubeSideState.Bomb)
+            {
+                _cubeActions.BombClicked(this);
+            }
+
             if(cubeSideClicked.CubeSideState != CubeSideState.Reload)
             {
                 return;

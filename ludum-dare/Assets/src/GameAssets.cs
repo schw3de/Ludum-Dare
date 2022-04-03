@@ -21,5 +21,10 @@ namespace schw3de.ld
         public Sprite ReloadSprite;
 
         public Sprite[] CubeCountdownSprite;
+
+        public Sprite MenuStart;
+        public Sprite MenuTutorial1Sprite;
+        public Sprite MenuTutorial2Sprite;
+        public Sprite MenuTutorial3Sprite;
     }
 }

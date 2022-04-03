@@ -14,22 +14,26 @@ namespace schw3de.ld
     {
         [SerializeField] private Camera _cam;
         [SerializeField] private Vector3 _target;
-        [SerializeField] private float _distanceToTarget = 10;
+        private float _distanceToTarget = 10;
 
-        private Vector3 previousPosition;
+        private Vector3 _previousPosition;
+        private Vector3 _originalPosition;
 
         private new void Awake()
         {
             base.Awake();
-            previousPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
-            HandleMovement();
+            _originalPosition = _cam.transform.position;
+            _cam.transform.LookAt(_target);
+            //previousPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
+            //previousPosition = new Vector3(200, 200, 0);
+            //HandleMovement();
         }
 
         void Update()
         {
             if (Input.GetMouseButtonDown(0))
             {
-                previousPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
+                _previousPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
             }
             else if (Input.GetMouseButton(0))
             {
@@ -43,10 +47,16 @@ namespace schw3de.ld
             HandleMovement();
         }
 
+        public void SetCamToTop()
+        {
+            _cam.transform.position = new Vector3(0, _distanceToTarget, 0);
+            _cam.transform.rotation = Quaternion.Euler(90, 0, 0);
+        }
+
         private void HandleMovement()
         {
             Vector3 newPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
-            Vector3 direction = previousPosition - newPosition;
+            Vector3 direction = _previousPosition - newPosition;
 
             float rotationAroundYAxis = -direction.x * 270; // camera moves horizontally
             float rotationAroundXAxis = direction.y * 270; // camera moves vertically
@@ -58,7 +68,7 @@ namespace schw3de.ld
 
             _cam.transform.Translate(new Vector3(0, 0, -_distanceToTarget));
 
-            previousPosition = newPosition;
+            _previousPosition = newPosition;
         }
     }
 }
