@@ -39,7 +39,7 @@ namespace schw3de.ld
         {
             if (RunCountdown && _timer.IsFinished())
             {
-                SetCountdownIndex(CountDownIndex--);
+                SetCountdownIndex(CountDownIndex - 1);
                 SetCountdownSprite(CountDownIndex);
 
                 if (CountDownIndex <= 0)
@@ -158,7 +158,6 @@ namespace schw3de.ld
 
         private void SetCountdownIndex(int countdownIndex)
         {
-            Debug.Log($"CountdownIndex: {countdownIndex}");
             CountDownIndex = countdownIndex;
         }
 
