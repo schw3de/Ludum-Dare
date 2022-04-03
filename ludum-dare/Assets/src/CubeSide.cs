@@ -26,7 +26,7 @@ namespace schw3de.ld
         public int CountDownIndex;
         public CubeSideState CubeSideState;
 
-        private Timer _timer = new Timer(TimeSpan.FromSeconds(1));
+        private Timer _timer = new Timer(TimeSpan.FromSeconds(3));
         private (GameObject go, SpriteRenderer renderer) _spriteGo;
 
         private CubeSideActions _cubeSideActions;
@@ -176,7 +176,7 @@ namespace schw3de.ld
 
         private void OnMouseDown()
         {
-            Debug.Log($"OnMouseDown! {gameObject.name}");
+            Debug.Log($"OnMouseDown! {gameObject.name} State:{CubeSideState}");
             _cubeSideActions.OnLeftClick(this);
         }
 

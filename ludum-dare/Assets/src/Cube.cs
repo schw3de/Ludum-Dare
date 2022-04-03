@@ -11,6 +11,7 @@ namespace schw3de.ld
 
         private MeshRenderer _meshRenderer;
         private CubeActions _cubeActions;
+        private CubeSideCreation _cubeSideCreation;
 
         private void Awake()
         {
@@ -20,6 +21,7 @@ namespace schw3de.ld
         public void Init(CubeActions cubeActions, CubeSideCreation cubeSideCreation)
         {
             _cubeActions = cubeActions;
+            _cubeSideCreation = cubeSideCreation;
 
             for (int cubeSideIndex = 0; cubeSideIndex < CubeSides.Length; cubeSideIndex++)
             {
@@ -29,7 +31,7 @@ namespace schw3de.ld
                 var cubeSide = cubeSideGo.AddComponent<CubeSide>();
 
                 cubeSide.Init(cubeSideIndex,
-                              cubeSideCreation.CubeSideStates[cubeSideIndex],
+                              _cubeSideCreation.CubeSideStates[cubeSideIndex],
                               new CubeSideActions(OnLeftClick,
                                                   OnRightClick,
                                                   OnCountdownChange));
@@ -96,6 +98,8 @@ namespace schw3de.ld
                 return;
             }
 
+            RandomizeCubeSides();
+
             //cubeSide.SetCountdown(8);
             //OnCountdownChange(cubeSideClicked);
 
@@ -103,7 +107,16 @@ namespace schw3de.ld
             {
                 cubeSide.SetCountdown(8);
                 OnCountdownChange(cubeSide);
+            }
+        }
 
+        private void RandomizeCubeSides()
+        {
+            _cubeSideCreation.ShuffleCubeSideStates();
+
+            for (int cubeSideIndex = 0; cubeSideIndex < CubeSides.Length; cubeSideIndex++)
+            {
+                CubeSides[cubeSideIndex].SetCubeSideState(_cubeSideCreation.CubeSideStates[cubeSideIndex]);
             }
         }
 

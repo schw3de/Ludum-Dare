@@ -14,5 +14,10 @@ namespace schw3de.ld
         {
             CubeSideStates = cubeSideStates;
         }
+
+        public void ShuffleCubeSideStates()
+        {
+            CubeSideStates = Randomizer.ShuffleArray(CubeSideStates);
+        }
     }
 }
