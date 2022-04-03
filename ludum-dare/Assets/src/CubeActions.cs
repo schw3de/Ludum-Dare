@@ -8,11 +8,11 @@ namespace schw3de.ld
 {
     public class CubeActions
     {
-        public Action<Cube> CubeDestroyed { get; set; }
+        public Action<Cube> CountdownChanged { get; set; }
 
-        public CubeActions(Action<Cube> cubeDestroyed)
+        public CubeActions(Action<Cube> countdownChanged)
         {
-            CubeDestroyed = cubeDestroyed;
+            CountdownChanged = countdownChanged;
         }
     }
 }

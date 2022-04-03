@@ -7,6 +7,9 @@ namespace schw3de.ld
 {
     public class Cube : MonoBehaviour
     {
+        private static int cubeIndex = 0;
+
+        public int CubeIndex = -1;
         public CubeSide[] CubeSides = new CubeSide[6];
 
         private MeshRenderer _meshRenderer;
@@ -20,6 +23,9 @@ namespace schw3de.ld
 
         public void Init(CubeActions cubeActions, CubeSideCreation cubeSideCreation)
         {
+            CubeIndex = cubeIndex++;
+            gameObject.name = $"Cube {CubeIndex}";
+
             _cubeActions = cubeActions;
             _cubeSideCreation = cubeSideCreation;
 
@@ -55,7 +61,14 @@ namespace schw3de.ld
             return cube;
         }
 
-        private void OnRightClick(CubeSide obj)
+        public void Destroy()
+        {
+            Debug.Log($"Destroy Cube {CubeIndex}");
+            // TODO add particels
+            DestroyImmediate(gameObject);
+        }
+
+        private void OnRightClick(CubeSide _)
         {
             CameraMovement.Instance.SetTarget(transform);
         }
@@ -68,27 +81,12 @@ namespace schw3de.ld
             }
         }
 
+        public int GetMinCubeCountdown() 
+            => CubeSides.Where(_ => _.CubeSideState == CubeSideState.Countdown).Min(_ => _.CountDownIndex);
+
         private void OnCountdownChange(CubeSide cubeSide)
         {
-            var minCountDownIndex = CubeSides.Where(_ => _.CubeSideState == CubeSideState.Countdown).Min(_ => _.CountDownIndex);
-
-            if (minCountDownIndex <= 0)
-            {
-                DestroyImmediate(gameObject);
-                _cubeActions.CubeDestroyed(this);
-            }
-            else if (minCountDownIndex < 4)
-            {
-                SetCubeState(CubeState.Red);
-            }
-            else if (minCountDownIndex < 6)
-            {
-                SetCubeState(CubeState.Yellow);
-            }
-            else
-            {
-                SetCubeState(CubeState.Default);
-            }
+            _cubeActions.CountdownChanged(this);
         }
 
         private void OnLeftClick(CubeSide cubeSideClicked)
@@ -100,14 +98,12 @@ namespace schw3de.ld
 
             RandomizeCubeSides();
 
-            //cubeSide.SetCountdown(8);
-            //OnCountdownChange(cubeSideClicked);
-
             foreach (var cubeSide in CubeSides)
             {
                 cubeSide.SetCountdown(8);
-                OnCountdownChange(cubeSide);
             }
+
+            OnCountdownChange(CubeSides.First());
         }
 
         private void RandomizeCubeSides()
@@ -120,7 +116,7 @@ namespace schw3de.ld
             }
         }
 
-        private void SetCubeState(CubeState cubeState)
+        public void SetCubeState(CubeState cubeState)
         {
             switch (cubeState)
             {

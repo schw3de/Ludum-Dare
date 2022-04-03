@@ -48,8 +48,8 @@ namespace schw3de.ld
             Vector3 newPosition = _cam.ScreenToViewportPoint(Input.mousePosition);
             Vector3 direction = previousPosition - newPosition;
 
-            float rotationAroundYAxis = -direction.x * 180; // camera moves horizontally
-            float rotationAroundXAxis = direction.y * 180; // camera moves vertically
+            float rotationAroundYAxis = -direction.x * 270; // camera moves horizontally
+            float rotationAroundXAxis = direction.y * 270; // camera moves vertically
 
             _cam.transform.position = _target;
 

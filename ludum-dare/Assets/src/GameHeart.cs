@@ -33,9 +33,7 @@ namespace schw3de.ld
 
         public void CreateCube()
         {
-            _cubes.Add(Cube.Create(new CubeActions(OnCubeDestroyed),
-                                   new CubeSideCreation(
-                                       new CubeSideState[]
+            var cubeSideStates =  new CubeSideState[]
                                        {
                                            CubeSideState.Countdown,
                                            CubeSideState.Countdown,
@@ -43,14 +41,36 @@ namespace schw3de.ld
                                            CubeSideState.Countdown,
                                            CubeSideState.Bomb,
                                            CubeSideState.Reload,
-                                       }),
+                                       };
+
+            _cubes.Add(Cube.Create(new CubeActions(OnCountdownChanged),
+                                   new CubeSideCreation(
+                                       cubeSideStates = cubeSideStates.ShuffleArray()),
                                    _cubeParent.transform,
                                    positions[_cubes.Count]));
         }
 
-        private void OnCubeDestroyed(Cube cube)
+        private void OnCountdownChanged(Cube cube)
         {
+            var minCountDownIndex = cube.GetMinCubeCountdown();
 
+            if (minCountDownIndex <= 0)
+            {
+                cube.Destroy();
+                _cubes.Remove(cube);
+            }
+            else if (minCountDownIndex < 4)
+            {
+                cube.SetCubeState(CubeState.Red);
+            }
+            else if (minCountDownIndex < 6)
+            {
+                cube.SetCubeState(CubeState.Yellow);
+            }
+            else
+            {
+                cube.SetCubeState(CubeState.Default);
+            }
         }
 
         public void StartCountDown()

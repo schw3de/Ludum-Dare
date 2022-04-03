@@ -39,8 +39,8 @@ namespace schw3de.ld
         {
             if (RunCountdown && _timer.IsFinished())
             {
-                CountDownIndex--;
-                SetText(CountDownIndex);
+                SetCountdownIndex(CountDownIndex--);
+                SetCountdownSprite(CountDownIndex);
 
                 if (CountDownIndex <= 0)
                 {
@@ -132,8 +132,8 @@ namespace schw3de.ld
                 return;
             }
 
-            CountDownIndex = countdownIndex;
-            SetText(CountDownIndex);
+            SetCountdownIndex(countdownIndex);
+            SetCountdownSprite(CountDownIndex);
             _timer.Start();
             RunCountdown = true;
         }
@@ -156,7 +156,13 @@ namespace schw3de.ld
             }
         }
 
-        private void SetText(int countdown)
+        private void SetCountdownIndex(int countdownIndex)
+        {
+            Debug.Log($"CountdownIndex: {countdownIndex}");
+            CountDownIndex = countdownIndex;
+        }
+
+        private void SetCountdownSprite(int countdown)
         {
             if (CubeSideState != CubeSideState.Countdown)
             {
