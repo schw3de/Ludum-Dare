@@ -12,7 +12,7 @@ namespace schw3de.ld
         {
             _instance = this as T;
             DontDestroyOnLoad(gameObject);
-            Debug.Log("Awake Singleton");
+            Debug.Log($"Awake Singleton {gameObject.name}");
         }
 
         public static T Instance

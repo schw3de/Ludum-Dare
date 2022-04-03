@@ -12,6 +12,10 @@ namespace schw3de.ld.utils
             _duration = duration;
         }
 
+        public Timer()
+        {
+        }
+
         public void Start()
         {
             _startTime = DateTime.UtcNow;

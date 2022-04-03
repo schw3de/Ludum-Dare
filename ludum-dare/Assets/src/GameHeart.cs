@@ -2,6 +2,7 @@
 using schw3de.ld.utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace schw3de.ld
@@ -15,41 +16,47 @@ namespace schw3de.ld
         private Cube _menuCube;
         private MainUi _mainUi;
         private bool isMenu = true;
-        private bool _isShowGameOver;
         private static readonly Vector3[] positions = new Vector3[]
         {
             new Vector3(0, 0, 0),
             new Vector3(5, 0, 0),
             new Vector3(0, 5, 0),
             new Vector3(0, 0, 5),
+            new Vector3(5, 5, 0),
+            new Vector3(0, 5, 5),
+            new Vector3(5, 0, 5),
+            new Vector3(5, 5, 5),
         };
 
         private DateTime _startTime;
         private bool _isGameRunning = false;
+        private Timer _cubeSpawnTimer = new Timer();
+
+        private int _cubeSpawnIndex = 0;
+        private TimeSpan[] _cubeTimeSpawns = new TimeSpan[]
+        {
+            TimeSpan.FromSeconds(3),
+            TimeSpan.FromSeconds(5),
+            TimeSpan.FromSeconds(8),
+            TimeSpan.FromSeconds(9),
+            TimeSpan.FromSeconds(10)
+        };
 
         private new void Awake()
         {
             base.Awake();
-            Debug.Log("Awake GameHeart");
             _cubeParent = new GameObject("CubeParent");
-
-            CreateMenuCube(false);
-            //CreateCube();
-            //CreateCube();
-            //CreateCube();
-            //CreateCube();
-            //StartCountDown();
         }
 
         private void Start()
         {
             _mainUi = MainUi.Instance;
-            //_mainUi.Init(new UiActions(OnStartInevitableMode));
+            CreateMenuCube(false);
         }
 
         private void Update()
         {
-            if(isMenu && Input.GetKeyDown(KeyCode.Return))
+            if (isMenu && Input.GetKeyDown(KeyCode.Return))
             {
                 isMenu = false;
                 DestroyImmediate(_menuCube.gameObject);
@@ -61,10 +68,17 @@ namespace schw3de.ld
                 CreateCube();
             }
 
-            if(_isGameRunning)
+            if (_isGameRunning)
             {
                 var totalSeconds = (int)(DateTime.UtcNow - _startTime).TotalSeconds;
                 _mainUi.SetSurvived($"Survived: " + GetSurvivedFormat(TimeSpan.FromSeconds(totalSeconds)));
+
+                if (_cubeSpawnTimer.IsFinished())
+                {
+                    _cubeSpawnIndex++;
+                    SetCubeSpawnTimer();
+                    CreateCube();
+                }
             }
         }
 
@@ -88,6 +102,7 @@ namespace schw3de.ld
                                    positions[_cubes.Count]);
 
             cube.StartCountDowns(8);
+            SetCubeSpawnTimer();
 
             _cubes.Add(cube);
         }
@@ -99,20 +114,20 @@ namespace schw3de.ld
 
         public void CreateMenuCube(bool gameOver)
         {
-            if(gameOver)
+            if (gameOver)
             {
                 CameraMovement.Instance.SetCamToTop();
             }
 
             var cubeSideStates = new CubeSideState[]
-                           {
-                                           CubeSideState.Tutorial3,
-                                           gameOver ? CubeSideState.GameOver : CubeSideState.Empty,
-                                           CubeSideState.Tutorial2,
-                                           CubeSideState.Tutorial1,
-                                           CubeSideState.Empty,
-                                           CubeSideState.Start,
-                           };
+            {
+                CubeSideState.Tutorial3,
+                gameOver ? CubeSideState.GameOver : CubeSideState.Empty,
+                CubeSideState.Tutorial2,
+                CubeSideState.Tutorial1,
+                CubeSideState.Empty,
+                CubeSideState.Start,
+            };
 
             _menuCube = Cube.Create(new CubeActions(OnCountdownChanged, OnBombClicked),
                                    new CubeSideCreation(cubeSideStates),
@@ -154,8 +169,8 @@ namespace schw3de.ld
             var survied = DateTime.UtcNow - _startTime;
             var survivedTotalSeconds = (int)survied.TotalSeconds;
             GameState.SetLastSurvivedTotalSeconds(survivedTotalSeconds);
-            
-            if(GameState.GetSurvivedTotalSeconds() < survivedTotalSeconds)
+
+            if (GameState.GetSurvivedTotalSeconds() < survivedTotalSeconds)
             {
                 GameState.SetSurvivedTotalSeconds(survivedTotalSeconds);
             }
@@ -177,6 +192,19 @@ namespace schw3de.ld
                 cube.StartCountDowns(8);
             }
         }
+
+        private void SetCubeSpawnTimer()
+        {
+            if(_cubeTimeSpawns.Length <= _cubeSpawnIndex)
+            {
+                _cubeSpawnTimer.Start(_cubeTimeSpawns.Last());
+
+                return;
+            }
+
+            _cubeSpawnTimer.Start(_cubeTimeSpawns[_cubeSpawnIndex]);
+        }
+
         private static string GetSurvivedFormat(TimeSpan survived)
             => $"{survived.Minutes} min {survived.TotalSeconds} sec{(survived.TotalSeconds > 1 ? "s" : string.Empty)}";
     }
