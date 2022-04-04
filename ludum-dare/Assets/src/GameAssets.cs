@@ -28,5 +28,8 @@ namespace schw3de.ld
         public Sprite MenuTutorial3Sprite;
 
         public GameObject ExplosionPrefab;
+
+        public AudioClip[] ReloadSounds;
+        public AudioClip GameOverSound;
     }
 }

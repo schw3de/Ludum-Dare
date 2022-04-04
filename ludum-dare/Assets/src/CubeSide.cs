@@ -35,7 +35,7 @@ namespace schw3de.ld
         public int CountDownIndex;
         public CubeSideState CubeSideState;
 
-        private Timer _timer = new Timer(TimeSpan.FromSeconds(2));
+        private Timer _timer = new Timer(TimeSpan.FromSeconds(2.2));
         private (GameObject go, SpriteRenderer renderer) _spriteGo;
 
         private CubeSideActions _cubeSideActions;
@@ -241,7 +241,7 @@ namespace schw3de.ld
             => parameter == 0 ? sizeOfCube : 0;
 
         private static string GetSurvivedFormat(TimeSpan survived)
-            => $"{survived.Minutes} min {survived.TotalSeconds} sec{(survived.TotalSeconds > 1 ? "s" : string.Empty)}";
+            => $"{survived.Minutes} min {survived.Seconds} sec{(survived.Seconds > 1 ? "s" : string.Empty)}";
 
         public static string ShowHighScore(TimeSpan survived, TimeSpan highscore)
             => survived == highscore ? "New Highscore!" : $"Highscore:\n{GetSurvivedFormat(highscore)}";

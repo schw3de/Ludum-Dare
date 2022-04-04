@@ -10,8 +10,6 @@ namespace schw3de.ld
 {
     public class GameHeart : Singleton<GameHeart>
     {
-        public GameObject PrefabCube;
-
         private GameObject _cubeParent;
         private List<Cube> _cubes = new List<Cube>();
         private Cube _menuCube;
@@ -20,19 +18,38 @@ namespace schw3de.ld
         private static readonly Vector3[] positions = new Vector3[]
         {
             new Vector3(0, 0, 0),
-            new Vector3(5, 0, 0),
+
+            new Vector3( 5, 0, 0),
             new Vector3(-5, 0, 0),
-            new Vector3(0, 5, 0),
+
+            new Vector3(0,  5, 0),
             new Vector3(0, -5, 0),
-            new Vector3(0, 0, 5),
+
+            new Vector3(0, 0,  5),
             new Vector3(0, 0, -5),
-            new Vector3(5, 5, 0),
+
+            new Vector3( 5,  5, 0),
             new Vector3(-5, -5, 0),
-            new Vector3(0, 5, 5),
+            new Vector3(-5,  5, 0),
+            new Vector3( 5, -5, 0),
+
+            new Vector3(0,  5,  5),
             new Vector3(0, -5, -5),
-            new Vector3(5, 0, 5),
+            new Vector3(0, -5,  5),
+            new Vector3(0,  5, -5),
+
+            new Vector3( 5, 0,  5),
             new Vector3(-5, 0, -5),
-            new Vector3(5, 5, 5),
+            new Vector3(-5, 0,  5),
+            new Vector3( 5, 0, -5),
+
+            new Vector3( 5,  5,  5),
+            new Vector3(-5,  5,  5),
+            new Vector3( 5, -5,  5),
+            new Vector3( 5,  5, -5),
+            new Vector3(-5, -5,  5),
+            new Vector3(-5,  5, -5),
+            new Vector3( 5, -5, -5),
             new Vector3(-5, -5, -5),
         };
 
@@ -178,6 +195,7 @@ namespace schw3de.ld
             var survied = DateTime.UtcNow - _startTime;
             var survivedTotalSeconds = (int)survied.TotalSeconds;
             cubeDestroyed.Explode();
+            AudioSourceFx.Instance.PlayGameOver();
 
             CameraMovement.Instance.Block(TimeSpan.FromSeconds(3));
             foreach (var cube in _cubes)
@@ -234,6 +252,6 @@ namespace schw3de.ld
         }
 
         private static string GetSurvivedFormat(TimeSpan survived)
-            => $"{survived.Minutes} min {survived.TotalSeconds} sec{(survived.TotalSeconds > 1 ? "s" : string.Empty)}";
+            => $"{survived.Minutes} min {survived.Seconds} sec{(survived.Seconds > 1 ? "s" : string.Empty)}";
     }
 }

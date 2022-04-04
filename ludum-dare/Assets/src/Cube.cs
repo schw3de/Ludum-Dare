@@ -114,6 +114,8 @@ namespace schw3de.ld
                 return;
             }
 
+            AudioSourceFx.Instance.PlayReloadFx();
+
             RandomizeCubeSides();
 
             foreach (var cubeSide in CubeSides)

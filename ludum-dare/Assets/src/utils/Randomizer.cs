@@ -42,5 +42,11 @@ namespace schw3de.ld
             var index = UnityEngine.Random.Range(0, list.Count);
             return list[index];
         }
+
+        public static T GetRandomItem<T>(this T[] array)
+        {
+            var index = UnityEngine.Random.Range(0, array.Length);
+            return array[index];
+        }
     }
 }
