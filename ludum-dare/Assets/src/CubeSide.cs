@@ -197,7 +197,8 @@ namespace schw3de.ld
             }
         }
 
-        private void OnMouseDown()
+        private void OnMouseUpAsButton()
+        
         {
             if (_isStop)
             {
